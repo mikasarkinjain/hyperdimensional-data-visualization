@@ -1,9 +1,12 @@
-double CameraX = 0;
-double CameraY = 0;
-double CameraZ = 0;
+double cameraX = 0;
+double cameraY = 0;
+double cameraZ = 0;
 
-double[] Data1D = new double[];
+double[] data1D;
+double[][] data2D;
+double[][][] data3D;
 
+int dimension;
 
 void setup() {
   size(640, 360, P3D);
