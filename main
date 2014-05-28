@@ -16,9 +16,23 @@ void setup() {
 }
 
 void draw() {
-  void openCSV(){}
-  void graph(){}
-  void moveCamera(){}
+  CSV(){}
+  graph(){}
+  updateView(){}
+}
+
+void CSV(){}
+
+void graph(){
+  noStroke(); //this code is from the "Move Eye" example
+  box(90); //this code is from the "Move Eye" example
+  stroke(255); //this code is from the "Move Eye" example
+  line(-100, 0, 0, 100, 0, 0); //this code is from the "Move Eye" example
+  line(0, -100, 0, 0, 100, 0); //this code is from the "Move Eye" example
+  line(0, 0, -100, 0, 0, 100); //this code is from the "Move Eye" example
+  }
+
+void updateView(){
   lights();
   background(0);
   
@@ -26,15 +40,4 @@ void draw() {
   camera(30.0, mouseY, 220.0, // eyeX, eyeY, eyeZ //this code is from the "Move Eye" example
          0.0, 0.0, 0.0, // centerX, centerY, centerZ
          0.0, 1.0, 0.0); // upX, upY, upZ
-  
-  noStroke(); //this code is from the "Move Eye" example
-  box(90); //this code is from the "Move Eye" example
-  stroke(255); //this code is from the "Move Eye" example
-  line(-100, 0, 0, 100, 0, 0); //this code is from the "Move Eye" example
-  line(0, -100, 0, 0, 100, 0); //this code is from the "Move Eye" example
-  line(0, 0, -100, 0, 0, 100); //this code is from the "Move Eye" example
-}
-
-void openCSV(){}
-void graph(){}
-void moveCamera(){}
+  }
