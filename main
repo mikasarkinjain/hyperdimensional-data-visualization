@@ -8,6 +8,8 @@ double[][][] data3D;
 
 int dimension;
 
+String filePath;
+
 void setup() {
   size(640, 360, P3D);
   fill(204);
