@@ -1,2 +1,2 @@
-multidimensional-data-visualization
+hyperdimensional-data-visualization
 ===================================
