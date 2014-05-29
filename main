@@ -20,11 +20,11 @@ void draw() {
   update3DView(){}
   
   hint(ENABLE_DEPTH_TEST); //needed (according to tutorial) to draw 2D buttons in P3D
-  CSV(){}
+  userInput(){}
   hint(DISABLE_DEPTH_TEST); //needed (according to tutorial) to draw 2D buttons in P3D
 }
 
-void CSV(){}
+void userInput(){}
 
 void graph(){
   noStroke(); //this code is from the "Move Eye" example
