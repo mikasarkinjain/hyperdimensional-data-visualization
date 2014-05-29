@@ -16,9 +16,12 @@ void setup() {
 }
 
 void draw() {
-  CSV(){}
   graph(){}
-  updateView(){}
+  update3DView(){}
+  
+  hint(ENABLE_DEPTH_TEST); //needed (according to tutorial) to draw 2D buttons in P3D
+  CSV(){}
+  hint(DISABLE_DEPTH_TEST); //needed (according to tutorial) to draw 2D buttons in P3D
 }
 
 void CSV(){}
@@ -30,9 +33,9 @@ void graph(){
   line(-100, 0, 0, 100, 0, 0); //this code is from the "Move Eye" example
   line(0, -100, 0, 0, 100, 0); //this code is from the "Move Eye" example
   line(0, 0, -100, 0, 0, 100); //this code is from the "Move Eye" example
-  }
+}
 
-void updateView(){
+void update3DView(){
   lights(); //this code is from the "Move Eye" example
   background(0); //this code is from the "Move Eye" example
   
