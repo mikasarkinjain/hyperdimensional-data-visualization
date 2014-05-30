@@ -109,7 +109,8 @@ void loadFile() {
 void fileSelected(File selection) {
   if (selection != null)
     filePath = selection.getAbsolutePath();
-    if (filePath.indexOf("csv") != -1)
+    //if (filePath.indexOf("csv") != -1) //bad way to check
+    if (filePath.substring(filePath.length()-4).equals(".csv")//should we even be checking csv extension, what if user imports txt file w. data - maybe we should use a try and except
       loadData();  
 }
 
