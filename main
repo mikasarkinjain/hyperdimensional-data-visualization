@@ -2,11 +2,28 @@ double cameraX = 0;
 double cameraY = 0;
 double cameraZ = 0;
 
-double[] data1D;
-double[][] data2D;
-double[][][] data3D;
-
 int dimension;
+
+double data1D;
+double[] data2D;
+double[][] data3D;
+double[][][] data4D;
+double[][][][] data5D;
+double[][][][][] data6D;
+double[][][][][][] data7D;
+
+double maxX; 
+double minX; 
+double maxY; 
+double minY; 
+double maxZ; 
+double minZ; 
+double maxW; 
+double minW; 
+double maxU; 
+double minU; 
+double maxV; 
+double minV; 
 
 String filePath;
 
