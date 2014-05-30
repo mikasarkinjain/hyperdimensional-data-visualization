@@ -29,6 +29,8 @@ double minV;
 
 boolean hoverOverButton;
 
+String viewType;
+
 String filePath;
 
 void setup() {
@@ -65,14 +67,16 @@ void drawUI() {
 }
 
 void graph(){
-  for (int i = 0; i < data3D.length; i++){
-    for (int j = 0; j < data3D[i]; j++){
-      if (data3D[i][j] != null){
-        point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+  if (viewType.equals("point"){
+    for (int i = 0; i < data3D.length; i++){
+      for (int j = 0; j < data3D[i]; j++){
+        if (data3D[i][j] != null){
+          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        }
       }
     }
   }
-  
+    
   lights(); //this code is from the "Move Eye" example
   
   noStroke(); //this code is from the "Move Eye" example
