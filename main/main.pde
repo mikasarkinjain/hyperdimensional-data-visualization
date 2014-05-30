@@ -6,13 +6,13 @@ double cameraZ = 0;
 
 int dimension;
 
-double data1D;
-double[] data2D;
-double[][] data3D;
-double[][][] data4D;
-double[][][][] data5D;
-double[][][][][] data6D;
-double[][][][][][] data7D;
+Double data1D;
+Double[] data2D;
+Double[][] data3D;
+Double[][][] data4D;
+Double[][][][] data5D;
+Double[][][][][] data6D;
+Double[][][][][][] data7D;
 
 double maxX; 
 double minX; 
@@ -65,6 +65,14 @@ void drawUI() {
 }
 
 void graph(){
+  for (int i = 0; i < data3D.length; i++){
+    for (int j = 0; j < data3D[i]; j++){
+      if (data3D[i][j] != null){
+        point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+      }
+    }
+  }
+  
   lights(); //this code is from the "Move Eye" example
   
   noStroke(); //this code is from the "Move Eye" example
