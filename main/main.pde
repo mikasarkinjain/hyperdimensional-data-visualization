@@ -67,7 +67,7 @@ void drawUI() {
 }
 
 void graph3D(){
-  if (viewType.equals("point"){
+  if (viewType.equals("point")){
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
@@ -77,7 +77,7 @@ void graph3D(){
     }
   }
   
-  if (viewType.equals("frame"){
+  if (viewType.equals("frame")){
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
         startSolid(); //does this method exist?
@@ -98,7 +98,7 @@ void graph3D(){
     }
   }
   
-  if (viewType.equals("surface"){
+  if (viewType.equals("surface")){
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
         startSolid(); //does this method exist?
