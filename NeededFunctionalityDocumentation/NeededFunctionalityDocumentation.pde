@@ -5,6 +5,8 @@
 //============================================================================
 //============================================================================
 
+//CREATED BY MIKA SARKIN JAIN TO DETAIL HOW ALL TECHNICAL PROBLEMS WILL BE OVERCOME
+
 //MORE:
 //http://www.processing.org/reference/mouseWheel_.html - will use scrolling as the zoom mechanism
 //https://www.processing.org/reference/keyPressed_.html - will use shift + mouse movement for pan (standard in CAD)
