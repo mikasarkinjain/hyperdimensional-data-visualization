@@ -71,7 +71,7 @@ void graph(){
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
-          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ); //does this method exist?
+          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2); //does this method exist?
         }
       }
     }
@@ -82,16 +82,16 @@ void graph(){
       for (int j = 0; j < data3D[i].length - 1; j++){
         startSolid(); //does this method exist?
         if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
         }
-        if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        if (data3D[i+1][j] != null){
+          vertex(i+1-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i+1][j]-(minZ+maxZ)/2);
         }
-        if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        if (data3D[i+1][j+1] != null){
+          vertex(i+1-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i+1][j+1]-(minZ+maxZ)/2);
         }
-        if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        if (data3D[i][j+1] != null){
+          vertex(i-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i][j+1]-(minZ+maxZ)/2);
         }
         endFace(); //does this method exist?
       }
