@@ -130,23 +130,32 @@ void graph3D(){
     fill(255, 0, 0); //red for now, should be changed
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
-        beginShape(); 
+        startShape(); 
         if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
+          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i+1][j] != null){
-          vertex(i+1-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i+1][j]-(minZ+maxZ)/2);
+          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i+1][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i+1][j+1] != null){
-          vertex(i+1-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i+1][j+1]-(minZ+maxZ)/2);
+          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i+1][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i][j+1] != null){
-          vertex(i-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i][j+1]-(minZ+maxZ)/2);
+          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         endShape(CLOSE); 
       }
     }
   }
+
 }
 
 void update3DView(){
