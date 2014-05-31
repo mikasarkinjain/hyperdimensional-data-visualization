@@ -81,9 +81,9 @@ void graph3D(){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
           
-          xcor = (i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
-          ycor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
-          zcor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
+          xcor = (i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
+          ycor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
+          zcor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
           
           translate(-xcor, -ycor, -zcor);
           sphere(2);
@@ -101,16 +101,24 @@ void graph3D(){
       for (int j = 0; j < data3D[i].length - 1; j++){
         startShape(); 
         if (data3D[i][j] != null){
-          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
+          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i+1][j] != null){
-          vertex(i+1-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i+1][j]-(minZ+maxZ)/2);
+          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i+1][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i+1][j+1] != null){
-          vertex(i+1-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i+1][j+1]-(minZ+maxZ)/2);
+          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i+1][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         if (data3D[i][j+1] != null){
-          vertex(i-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i][j+1]-(minZ+maxZ)/2);
+          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
+                 (data3D[i][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
         }
         endShape(CLOSE); 
       }
