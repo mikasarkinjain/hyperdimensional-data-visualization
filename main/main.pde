@@ -11,8 +11,8 @@ Double[] data2D;
 Double[][] data3D;
 Double[][][] data4D;
 Double[][][][] data5D;
-Double[][][][][] data6D;
-Double[][][][][][] data7D;
+Double[][][][] data6D;
+Double[][][][] data7D;
 
 double maxX; 
 double minX; 
