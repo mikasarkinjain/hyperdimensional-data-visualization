@@ -67,6 +67,8 @@ void drawUI() {
 }
 
 void graph3D(){
+  noStroke(); 
+  fill(0, 0, 255); //blue for now, should be changed
   if (viewType.equals("point")){
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
@@ -80,6 +82,8 @@ void graph3D(){
   }
   
   if (viewType.equals("frame")){
+    stroke(255); //white for now, should be changed
+    noFill();
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
         startShape(); 
@@ -101,6 +105,7 @@ void graph3D(){
   }
   
   if (viewType.equals("surface")){
+    noStroke();
     fill(255, 0, 0); //red for now, should be changed
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
