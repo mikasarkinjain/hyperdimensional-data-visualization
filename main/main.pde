@@ -33,7 +33,7 @@ String viewType;
 
 String filePath;
 
-double maxDimensionLength;
+double maxAxisLength;
 
 double currentWValue;
 
@@ -74,12 +74,21 @@ void graph3D(){
   if (viewType.equals("point")){
     noStroke(); 
     fill(0, 0, 255); //blue for now, should be changed
+    
+    double xcor, ycor, zcor;
+    
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
-          translate(-1*(i-(minX+maxX)/2), -1*(j-(minY+maxY)/2), -1*(data3D[i][j]-(minZ+maxZ)/2));
+          
+          xcor = (i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
+          ycor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
+          zcor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin);
+          
+          translate(-xcor, -ycor, -zcor);
           sphere(2);
-          translate(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
+          translate(xcor, ycor, zcor);
+        
         }
       }
     }
