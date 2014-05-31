@@ -67,9 +67,9 @@ void drawUI() {
 }
 
 void graph3D(){
-  noStroke(); 
-  fill(0, 0, 255); //blue for now, should be changed
   if (viewType.equals("point")){
+    noStroke(); 
+    fill(0, 0, 255); //blue for now, should be changed
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
