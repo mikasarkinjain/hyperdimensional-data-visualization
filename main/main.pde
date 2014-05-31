@@ -66,7 +66,7 @@ void drawUI() {
   hint(ENABLE_DEPTH_TEST);
 }
 
-void graph(){
+void graph3D(){
   if (viewType.equals("point"){
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
@@ -97,16 +97,6 @@ void graph(){
       }
     }
   }
-    
-  lights(); //this code is from the "Move Eye" example
-  
-  noStroke(); //this code is from the "Move Eye" example
-  fill(255);
-  box(90); //this code is from the "Move Eye" example
-  stroke(255); //this code is from the "Move Eye" example
-  line(-100, 0, 0, 100, 0, 0); //this code is from the "Move Eye" example
-  line(0, -100, 0, 0, 100, 0); //this code is from the "Move Eye" example
-  line(0, 0, -100, 0, 0, 100); //this code is from the "Move Eye" example
 }
 
 void update3DView(){
