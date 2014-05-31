@@ -33,6 +33,10 @@ String viewType;
 
 String filePath;
 
+double maxDimensionLength;
+
+double currentWValue;
+
 void setup() {
   size(960, 540, P3D); //this code is from the "Move Eye" example
   fill(204); //this code is from the "Move Eye" example
