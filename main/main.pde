@@ -71,7 +71,9 @@ void graph3D(){
     for (int i = 0; i < data3D.length; i++){
       for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
-          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2); //does this method exist?
+          translate(-1*(i-(minX+maxX)/2), -1*(j-(minY+maxY)/2), -1*(data3D[i][j]-(minZ+maxZ)/2));
+          sphere(2);
+          translate(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
         }
       }
     }
@@ -80,7 +82,7 @@ void graph3D(){
   if (viewType.equals("frame")){
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
-        startSolid(); //does this method exist?
+        startShape(); 
         if (data3D[i][j] != null){
           vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
         }
@@ -93,15 +95,16 @@ void graph3D(){
         if (data3D[i][j+1] != null){
           vertex(i-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i][j+1]-(minZ+maxZ)/2);
         }
-        endFace(); //does this method exist?
+        endShape(CLOSE); 
       }
     }
   }
   
   if (viewType.equals("surface")){
+    fill(255, 0, 0); //red for now, should be changed
     for (int i = 0; i < data3D.length - 1; i++){
       for (int j = 0; j < data3D[i].length - 1; j++){
-        startSolid(); //does this method exist?
+        beginShape(); 
         if (data3D[i][j] != null){
           vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-(minZ+maxZ)/2);
         }
@@ -114,7 +117,7 @@ void graph3D(){
         if (data3D[i][j+1] != null){
           vertex(i-(minX+maxX)/2, j+1-(minY+maxY)/2, data3D[i][j+1]-(minZ+maxZ)/2);
         }
-        endFace(); //does this method exist?
+        endShape(CLOSE); 
       }
     }
   }
