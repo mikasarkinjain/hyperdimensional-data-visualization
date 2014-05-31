@@ -69,10 +69,31 @@ void drawUI() {
 void graph(){
   if (viewType.equals("point"){
     for (int i = 0; i < data3D.length; i++){
-      for (int j = 0; j < data3D[i]; j++){
+      for (int j = 0; j < data3D[i].length; j++){
         if (data3D[i][j] != null){
-          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+          point(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ); //does this method exist?
         }
+      }
+    }
+  }
+  
+  if (viewType.equals("frame"){
+    for (int i = 0; i < data3D.length - 1; i++){
+      for (int j = 0; j < data3D[i].length - 1; j++){
+        startSolid(); //does this method exist?
+        if (data3D[i][j] != null){
+          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        }
+        if (data3D[i][j] != null){
+          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        }
+        if (data3D[i][j] != null){
+          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        }
+        if (data3D[i][j] != null){
+          vertex(i-(minX+maxX)/2, j-(minY+maxY)/2, data3D[i][j]-minZ)
+        }
+        endFace(); //does this method exist?
       }
     }
   }
