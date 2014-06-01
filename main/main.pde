@@ -14,6 +14,14 @@ Double[][][][] data5D;
 Double[][][][] data6D;
 Double[][][][] data7D;
 
+//data1D: x
+//data2D: [x]
+//data3D: [x][y] - z vals are at data3D[x][y]
+//data4D: [w][x][y] - z vals are at data3D[w][x][y]
+//data5D: [w][x][y][z/u] - z vals are at data3D[w][x][y][0], u vals are at data3D[w][x][y][1]
+//data6D: [w][x][y][z/u/v] - z vals are at data3D[w][x][y][0], u vals are at data3D[w][x][y][1], v vals are at data3D[w][x][y][2]
+//data7D: [w][x][y][z/u/v/t] - z vals are at data3D[w][x][y][0], u vals are at data3D[w][x][y][1], v vals are at data3D[w][x][y][2], t vals are at data3D[w][x][y][3]
+
 double maxX; 
 double minX; 
 double maxY; 
