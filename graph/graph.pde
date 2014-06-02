@@ -11,7 +11,12 @@ void graph1D(){
   point(0, 0, data1D); //sudo code
 }
 
-
+void graph2D(){
+  for (int i = 0; i < data2D.length-1; i++){
+    line(0, 0, data2D[i]
+         0, 0, data2D[i+1]); //sudo code
+  }
+}
 
 void graph4D(){
   Double[][] data4DatW = new Double[data4D.length][data4D[0].length]; //assumes data4D is rectangular
