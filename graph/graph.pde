@@ -1,13 +1,19 @@
-if (dimension == 1D) 
-if (dimension == 2D) 
+if (dimension == 1D) graph1D();
+if (dimension == 2D) graph2D();
 if (dimension == 3D) graph3D(data3D);
-if (dimension == 4D) graph4D(w);
-if (dimension == 5D) 
-if (dimension == 6D) 
-if (dimension == 7D) 
+if (dimension == 4D) graph4D();
+if (dimension == 5D) graph4D();
+if (dimension == 6D) graph4D();
+if (dimension == 7D) graph4D();
 
 
-void graph4D(w){
+void graph1D(){
+  point(0, 0, data1D); //sudo code
+}
+
+
+
+void graph4D(){
   Double[][] data4DatW = new Double[data4D.length][data4D[0].length]; //assumes data4D is rectangular
   double wIndex = (w-minW)/(maxW-minW)*data4D.length-1;
   
