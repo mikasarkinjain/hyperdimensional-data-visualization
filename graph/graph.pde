@@ -13,14 +13,14 @@ void graph1D(){
 
 void graph2D(){
   for (int i = 0; i < data2D.length-1; i++){
-    line((w-minW)/(maxW-minW)*data4D.length-1, 0, data2D[i]
-         (w-minW)/(maxW-minW)*data4D.length, 0, data2D[i+1]); //sudo code
+    line(i/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i]
+        ((i+1)/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i+1]); //sudo code
   }
 }
 
 void graph4D(){
   Double[][] data4DatW = new Double[data4D.length][data4D[0].length]; //assumes data4D is rectangular
-  double wIndex = (w-minW)/(maxW-minW)*data4D.length-1;
+  double wDoubleIndex = (w-minW)/(maxW-minW)*(data4D.length-1);
   
   for (int i = 0; i < data4DatW; i++){
     for (int j = 0; j < data4DatW[i]; j++){
