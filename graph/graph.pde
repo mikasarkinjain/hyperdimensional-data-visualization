@@ -13,8 +13,8 @@ void graph1D(){
 
 void graph2D(){
   for (int i = 0; i < data2D.length-1; i++){
-    line(0, 0, data2D[i]
-         0, 0, data2D[i+1]); //sudo code
+    line((w-minW)/(maxW-minW)*data4D.length-1, 0, data2D[i]
+         (w-minW)/(maxW-minW)*data4D.length, 0, data2D[i+1]); //sudo code
   }
 }
 
