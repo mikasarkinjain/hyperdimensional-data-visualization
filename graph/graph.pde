@@ -1,11 +1,11 @@
 if (viewType.equals("best-fit surface") || viewType.equals("best-fit mesh")){
-  if (dimension == 1D) graph1D();
-  if (dimension == 2D) graph2D();
-  if (dimension == 3D) graph3D(data3D);
-  if (dimension == 4D) graph4D();
-  if (dimension == 5D) graph4D();
-  if (dimension == 6D) graph4D();
-  if (dimension == 7D) graph4D();
+  if (dimension == 1) graph1D();
+  if (dimension == 2) graph2D();
+  if (dimension == 3) graph3D(data3D);
+  if (dimension == 4) graph4D();
+  if (dimension == 5) graph4D();
+  if (dimension == 6) graph4D();
+  if (dimension == 7) graph4D();
   
   
   void graph1D(){
