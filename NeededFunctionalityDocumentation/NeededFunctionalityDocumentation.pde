@@ -14,6 +14,8 @@
 
 float rotx = PI/4;
 float roty = PI/4;
+float fov = PI / 3;
+float x = 0;
 
 boolean circleOver;
 
@@ -23,13 +25,15 @@ void setup() {
 }
 
 void draw() {
-  
+
   // Change height of the camera with mouseY
-  translate(width/2.0, height/2.0, -100);
+  translate(width/2.0 + x, height/2.0, -100);
   rotateX(rotx);
   rotateY(roty);
+  double cameraZ = ((height/2.0) / tan(PI*60.0/360.0));
+  perspective(fov, (float) width/height, (float) cameraZ/10.0, (float) cameraZ*10.0);
   graph();
- 
+
 
   hint(DISABLE_DEPTH_TEST);
   camera();
@@ -37,33 +41,30 @@ void draw() {
   if ( overCircle(10, 10, 200) ) {
     circleOver = true;
     fill(100, 0, 0);
-
   } else {
     circleOver = false;
-        fill(0, 0, 0);
-
+    fill(0, 0, 0);
   }
   ellipse(10, 10, 200, 200);
   hint(ENABLE_DEPTH_TEST);
-
 }
 
-void graph(){
+void graph() {
   //lights();
   background(0);
   //box(90);
   textSize(30); 
-    fill(0, 0, 255); 
-    text("TEXT TEST", 20, 60, -10); 
-  
+  fill(0, 0, 255); 
+  text("TEXT TEST", 20, 60, -10); 
+
   stroke(255);
-fill(127, 40, 20);
-beginShape();
-vertex(-100, -100, 0);
-vertex( 100, -100, 0);
-vertex( 100,  100, 0);
-vertex(-100,  100, 0);
-endShape(CLOSE);
+  fill(127, 40, 20);
+  beginShape();
+  vertex(-100, -100, 0);
+  vertex( 100, -100, 0);
+  vertex( 100, 100, 0);
+  vertex(-100, 100, 0);
+  endShape(CLOSE);
 
 
   stroke(255);
@@ -74,21 +75,21 @@ endShape(CLOSE);
   beginShape();
   vertex(-100, -100, -100);
   vertex( 100, -100, -100);
-  vertex(   0,    0,  100);
-  
+  vertex(   0, 0, 100);
+
   vertex( 100, -100, -100);
-  vertex( 100,  100, -100);
-  vertex(   0,    0,  100);
-  
-  
-    vertex(-100,  100, -100);
+  vertex( 100, 100, -100);
+  vertex(   0, 0, 100);
+
+
+  vertex(-100, 100, -100);
   vertex(-100, -100, -100);
-  vertex(   0,    0,  100);
-  
+  vertex(   0, 0, 100);
+
   vertex( 100, 100, 100);
   vertex(-100, 100, -100);
-  vertex(   0,   0,  100);
- 
+  vertex(   0, 0, 100);
+
   endShape();
 }
 
@@ -98,7 +99,20 @@ void mouseDragged() {
   roty += (mouseX-pmouseX) * rate;
 }
 
-
+void keyPressed() {
+  // zoom out
+  if (keyCode == DOWN)
+    fov *= 1.1;
+  // zoom in
+  else if (keyCode == UP)
+    fov *= 0.9;
+  // translate left
+  else if (keyCode == LEFT)
+    x -= 4;
+  // translate right
+  else if (keyCode == RIGHT)
+    x += 4;
+}
 
 
 boolean overCircle(int x, int y, int diameter) {
@@ -114,11 +128,11 @@ boolean overCircle(int x, int y, int diameter) {
 
 void mousePressed() {
   if (circleOver) {
-    whenButtonClicked(); 
+    whenButtonClicked();
   }
 }
 
-void whenButtonClicked(){
+void whenButtonClicked() {
   selectInput("Select a file to process:", "fileSelected");
 }
 
@@ -129,5 +143,3 @@ void fileSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
   }
 }
-
-
