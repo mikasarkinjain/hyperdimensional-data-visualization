@@ -2,6 +2,10 @@ boolean holdingW = false;
 boolean holdingShift = false;
 // set to false every draw()
 
+void mouseWheel(MouseWheelEvent e) {
+    // zoom
+}
+
 void mouseDragged() {
   double WRate = 0.01;
   double XYRate = 0.01;
