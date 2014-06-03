@@ -1,5 +1,5 @@
-String viewType = "best-fit mesh";
-int dimension = 4;
+String viewType = "best-fit surface";
+int dimension = 3;
 
 
 double w = 2;
@@ -80,7 +80,7 @@ void draw() {
 void mouseDragged() {
   float rate = 0.01;
   rotx += (pmouseY-mouseY) * rate;
-  roty += (mouseX-pmouseX) * rate;
+  roty -= (mouseX-pmouseX) * rate;
 }
 
 void drawAxis(){
@@ -173,13 +173,19 @@ void graph2D(){
 }
 
 void graph3D(Double[][] data, double minZinData, double maxZinData){
-  stroke(255); //white for now, should be changes 
-  noFill();
+  if (viewType == "best-fit mesh"){
+    stroke(255); //white for now, should be changed 
+    noFill();
+  }
+  else { //should this be an else if "best-fit surface"?
+    noStroke();
+    fill(255, 0, 0); //red for now, should be changed
+  }
   
-  double dialationFactorX = maxDimensionLength/(data2D.length-1);
+  double dialationFactorX = maxDimensionLength/(data.length-1);
   double dialationFactorY = maxDimensionLength/(data[0].length-1);
   double dialationFactorZ = maxDimensionLength/(maxZinData-minZinData);
-
+  
 
   for (int i = 0; i < data.length-1; i++){
     for (int j = 0; j < data[0].length-1; j++){ //assumes data3D is rectangular
