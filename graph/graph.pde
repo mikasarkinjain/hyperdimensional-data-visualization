@@ -9,13 +9,14 @@ if (viewType.equals("best-fit surface") || viewType.equals("best-fit mesh")){
   
   
   void graph1D(){
-    point(0, 0, data1D); //sudo code
+    point(0, 0, 0); //sudo code
+    //label(0, 0, 0, "X "+data1D);  //sudo code
   }
   
   void graph2D(){
     for (int i = 0; i < data2D.length-1; i++){
-      line(i/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i]
-          ((i+1)/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i+1]); //sudo code
+      line(i/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i] - minY
+          ((i+1)/(data2D.length-1)*(maxX-minX)+minX, 0, data2D[i+1] - minY); //sudo code
     }
   }
   
@@ -30,5 +31,22 @@ if (viewType.equals("best-fit surface") || viewType.equals("best-fit mesh")){
       }
     }
     graph3D(data4DatW);
+  }
+}
+
+//else if (viewType.equals("points")){
+  for (int i = 0; i < dataTable.length; i++){
+    if (dataTable[i].length == 1) {
+      point(0, 0, 0);
+    }
+    else if (Table[i].length == 2) {
+      
+    }
+    else if (Table[i].length == 3) {
+      
+    }
+    else if (Table[i].length == 4) {
+      
+    }
   }
 }
