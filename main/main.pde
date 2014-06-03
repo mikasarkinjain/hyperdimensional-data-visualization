@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 Table data;
 
 double cameraX = 0;
@@ -7,7 +9,7 @@ double cameraZ = 0;
 int dimension;
 
 String[] varLabels;
-double[][] dataTable;
+double[][] arrayTable;
 
 Double data1D;
 Double[] data2D;
@@ -35,6 +37,10 @@ double minT;
 double incrementX;
 double incrementY;
 double incrementW;
+
+int lenX;
+int lenY;
+int lenW;
 
 boolean hoverOverButton;
 
@@ -185,13 +191,13 @@ void fileSelected(File selection) {
 }
 
 void loadData() {
-  loadAsTable(); // dataTable
+  loadAsTable(); // arrayTable
   getMinMax(); // minX, maxX, etc.
   loadAsArray(); // data1D, data2D, etc.
   //printData();
 }
 
-// Loads file into `dataTable` 
+// Loads file into `arrayTable` 
 void loadAsTable() {
   // don't use "header" argument: we have to load headers manually, because "header" assumes that we know what headers are
   Table table = loadTable(filePath); 
@@ -207,12 +213,12 @@ void loadAsTable() {
   }
   table.removeRow(0);
   
-  // fill dataTable
-  dataTable = new double[table.getRowCount()][dimension];
+  // fill arrayTable
+  arrayTable = new double[table.getRowCount()][dimension];
   for (int row = 0; row < table.getRowCount(); row++)
     for (int col = 0; col < dimension; col++) {
        // there's no table.getDouble, so we do table.getString and parse it as Double
-      dataTable[row][col] = Double.parseDouble(table.getString(row, col));
+      arrayTable[row][col] = Double.parseDouble(table.getString(row, col));
     }
 }
 
@@ -221,13 +227,13 @@ void getMinMax() {
   double min, max;
   // "col" is the column and hence the dimension
   for (int col = 0; col < dimension; col++) {
-    min = dataTable[0][col];
+    min = arrayTable[0][col];
     max = min;
-    for (int row = 1; row < dataTable.length; row++) {
-       if (dataTable[row][col] < min)
-         min =  dataTable[row][col];
-       else if (dataTable[row][col] > max)
-         max =  dataTable[row][col];
+    for (int row = 1; row < arrayTable.length; row++) {
+       if (arrayTable[row][col] < min)
+         min =  arrayTable[row][col];
+       else if (arrayTable[row][col] > max)
+         max =  arrayTable[row][col];
     }
     
     // puts min and max in correct variables
@@ -250,8 +256,9 @@ void getMinMax() {
   }  
 }
 
-// Loads `dataTable` into array
+// Loads `arrayTable` into array
 void loadAsArray() {
+  calcIncrements();
   switch(dimension) {
     case 1: load1D(); break;
     case 2: load2D(); break;
@@ -263,19 +270,52 @@ void loadAsArray() {
   }   
 }
 
+void calcIncrements() {
+  int[] dimensionsToUse = {0, 1, 3}; // X, Y, W
+  for (int dim : dimensionsToUse) {
+    // skip Y or W if dimension isn't big enough 
+    if ((dim >= 1 && dimension < 3) || (dim >= 3 && dimension < 4))
+      continue;
+      
+    // all values from an axis (say, X)
+    double[] values = new double[arrayTable.length];
+    
+    // fill `values` with relevant column 
+    for (int row = 0; row < arrayTable.length; row++)
+      values[row] = arrayTable[row][dim];
+    
+    // sort  
+    Arrays.sort(values);
+    
+    
+    // add up the increments of the points  
+    double sum = 0.0;
+    int uniqueValuesCount = 0; // we need to remove duplicates 
+    
+    for (int i = 1; i < values.length; i++) {
+      // skip duplicates
+      if (values[i] != values[i - 1]) {
+        sum += values[i] - values[i - 1];
+       uniqueValuesCount++; 
+      }
+    }
+    
+    double increment = sum / uniqueValuesCount;
+    // given an increment and a min and max, we can say that there are 1 + (max - min) / increment 
+    // elements in the resulting array. 
+    int arrayLen = (int) (1 + (values[values.length - 1] - values[0]) / increment);
+    
+    // set `increment` and `len` to relevant instance variables
+    switch(dim) {
+      case 0: incrementX = increment; lenX = arrayLen; break;
+      case 1: incrementY = increment; lenY = arrayLen; break;
+      case 3: incrementW = increment; lenW = arrayLen; break;
+    }
+  }
+}
+
+
 /* HELPER METHODS FOR loadAsArray() */
-// calculates a uniform increment between min and max
-void calcIncrementX() {
-  incrementX = dataTable.length > 1 ? (maxX - minX) / (dataTable.length - 1) : 0;
-}
-
-void calcIncrementY() {
-  incrementY = dataTable.length > 1 ? (maxY - minY) / (dataTable.length - 1) : 0;
-}
-
-void calcIncrementW() {
-  incrementW = dataTable.length > 1 ? (maxW - minW) / (dataTable.length - 1) : 0;
-}
 
 // rounds raw data value to uniform value
 double roundValue(double value, double min, double increment) {
@@ -295,27 +335,33 @@ int valAtIndex(int index, double min, double increment) {
 /* END OF HELPER FUNCTIONS */
 
 void load1D() {
+  // use average of points
+  
   double sum = 0.0;
-  for (double[] point : dataTable) {
+  for (double[] point : arrayTable) {
     sum += point[0]; 
   }
   
-  data1D = sum / dataTable.length;
+  data1D = sum / arrayTable.length;
 }
 
 void load2D() {
-  data2D = new Double[dataTable.length];
-  double[] averageTally = new double[dataTable.length]; // lowercase-"d" double
+  data2D = new Double[lenX];
   
-  // the data will be rounded. This method calculates a uniform increment for X.
-  calcIncrementX();
-  double roundedX; int indexX;
-
-  for (double[] point : dataTable) {
-    roundedX = roundValue(point[0], minX, incrementX);
-    indexX = calcArrayIndex(roundedX, minX, incrementX);
+  // When two points have the same X, we average their Ys. (this data structure is best-fit)
+  // `averageTally` is a duplicate of `data2D` except that we store # number of times averaged
+  // instead of Y for a given X.
+  double[] averageTally = new double[lenX];
+  
+  for (double[] point : arrayTable) {
+    double roundedX = roundValue(point[0], minX, incrementX);
+    int indexX = calcArrayIndex(roundedX, minX, incrementX);
     
     averageTally[indexX]++;
+    
+    // If there already is a Z for this X...
+    // ... We compute  the weighted average of the points, using `averageTally`.
+    // If there is no value yet for thisX, we don't need to do averaging.
     if (averageTally[indexX] >= 2)
       data2D[indexX] = (point[1] + data2D[indexX] * averageTally[indexX]) / (averageTally[indexX] + 1);
     else
@@ -325,25 +371,25 @@ void load2D() {
 
 
 void load3D() {
-  data3D = new Double[dataTable.length][dataTable.length];
-  double[][] averageTally = new double[dataTable.length][dataTable.length]; // lowercase-"d" double
+  data3D = new Double[lenX][lenY];
   
-  // the data will be rounded. These methods calculate uniform increments.
-  calcIncrementX();
-  calcIncrementY();
+  // When two points have the same (X, Y), we average their Zs. (this data structure is best-fit)
+  // `averageTally` is a duplicate of `data3D` except that we store # number of times averaged
+  // instead of Z for a given (X, Y).
+  double[][] averageTally = new double[lenX][lenY]; // lowercase-"d" double
   
-  double roundedX; int indexX;
-  double roundedY; int indexY;
-  
-  for (double[] point : dataTable) {
-    roundedX = roundValue(point[0], minX, incrementX);
-    indexX = calcArrayIndex(roundedX, minX, incrementX);
+  for (double[] point : arrayTable) {
+    double roundedX = roundValue(point[0], minX, incrementX);
+    int indexX = calcArrayIndex(roundedX, minX, incrementX);
     
-    roundedY = roundValue(point[1], minY, incrementY);
-    indexY = calcArrayIndex(roundedY, minY, incrementY);
-    
+    double roundedY = roundValue(point[1], minY, incrementY);
+    int indexY = calcArrayIndex(roundedY, minY, incrementY);
     
     averageTally[indexX][indexY]++;
+    
+    // If there already is a Z for this (X, Y)...
+    // ... We compute  the weighted average of the points, using `averageTally`.
+    // If there is no value yet for this (X, Y), we don't need to do averaging.
     if (averageTally[indexX][indexY] >= 2)
       data3D[indexX][indexY] = (point[2] + data3D[indexX][indexY] * averageTally[indexX][indexY]) / (averageTally[indexX][indexY] + 1);
     else
@@ -352,29 +398,29 @@ void load3D() {
 }
   
 void load4D() {
-  data4D = new Double[dataTable.length][dataTable.length][dataTable.length];
-  double[][][] averageTally = new double[dataTable.length][dataTable.length][dataTable.length]; // lowercase-"d" double
+  data4D = new Double[lenW][lenX][lenY];
   
-  // the data will be rounded. These methods calculate uniform increments.
-  calcIncrementW();
-  calcIncrementX();
-  calcIncrementY();
+  // When two points have the same (W, X, Y), we average their Zs. (this data structure is best-fit)
+  // `averageTally` is a duplicate of `data4D` except that we store # number of times averaged
+  // instead of Z for a given (W, X, Y).
+  double[][][] averageTally = new double[lenW][lenX][lenY]; // lowercase-"d" double
   
-  double roundedX; int indexX;
-  double roundedY; int indexY;
-  double roundedW; int indexW;
-  
-  for (double[] point : dataTable) {
-    roundedW = roundValue(point[3], minW, incrementW);
-    indexW = calcArrayIndex(roundedW, minW, incrementW);
+  for (double[] point : arrayTable) {
+    double roundedW = roundValue(point[3], minW, incrementW);
+    int indexW = calcArrayIndex(roundedW, minW, incrementW);
 
-    roundedX = roundValue(point[0], minX, incrementX);
-    indexX = calcArrayIndex(roundedX, minX, incrementX);
+    double roundedX = roundValue(point[0], minX, incrementX);
+    int indexX = calcArrayIndex(roundedX, minX, incrementX);
     
-    roundedY = roundValue(point[1], minY, incrementY);
-    indexY = calcArrayIndex(roundedY, minY, incrementY);
+    double roundedY = roundValue(point[1], minY, incrementY);
+    int indexY = calcArrayIndex(roundedY, minY, incrementY);
     
     averageTally[indexW][indexX][indexY]++;
+    
+    // If there already is a Z for this (W, X, Y)...
+    // ... We compute  the weighted average of the points, using `averageTally`.
+    // If there is no value yet for this (W, X, Y), we don't need to do averaging.
+    
     if (averageTally[indexW][indexX][indexY] >= 2)
       data4D[indexW][indexX][indexY] = (point[2] + data4D[indexW][indexX][indexY] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
     else
@@ -396,38 +442,32 @@ void load7D() {
 }
 
 // 5D-7D are very similar, so we use this generic method.
-// See the comment at the top for the special structure of 5D to 7D.
+// See the block comment at the top for the special structure of 5D to 7D.
 Double[][][][] loadHighDimension() {
-  Double[][][][] matrix = new Double[dataTable.length][dataTable.length][dataTable.length][dimension - 4];
+  Double[][][][] matrix = new Double[lenW][lenX][lenY][dimension - 3];
 
-  // if two points have the same X, Y, and W, we average them. Here we keep track of how many times a given
-  // (W, X, Y) has been averaged already, in order to do averages correctly.
-  double[][][] averageTally = new double[dataTable.length][dataTable.length][dataTable.length]; // lowercase-"d" double
+  // When two points have the same (W, X, Y), we average their Zs, Us, Vs, and Ts (if they exist). (this data structure is best-fit)
+  // `averageTally` is a duplicate of `matrix` except that we store # number of times averaged
+  // instead of (Z, U, V, T) for a given (W, X, Y).
+  double[][][] averageTally = new double[lenW][lenX][lenY]; // lowercase-"d" double
   
-  // the data will be rounded. These methods calculate uniform increments.
-  calcIncrementW();
-  calcIncrementX();
-  calcIncrementY();
-  
-  double roundedW; int indexW;
-  double roundedX; int indexX;
-  double roundedY; int indexY;
-  
-  for (double[] point : dataTable) {
+  for (double[] point : arrayTable) {
     // double[] point is of form [x, y, z, w, u, v, t]
-    
-    roundedW = roundValue(point[3], minW, incrementW);
-    indexW = calcArrayIndex(roundedW, minW, incrementW);
 
-    roundedX = roundValue(point[0], minX, incrementX);
-    indexX = calcArrayIndex(roundedX, minX, incrementX);
+    double roundedW = roundValue(point[3], minW, incrementW);
+    int indexW = calcArrayIndex(roundedW, minW, incrementW);
+
+    double roundedX = roundValue(point[0], minX, incrementX);
+    int indexX = calcArrayIndex(roundedX, minX, incrementX);
     
-    roundedY = roundValue(point[1], minY, incrementY);
-    indexY = calcArrayIndex(roundedY, minY, incrementY);
+    double roundedY = roundValue(point[1], minY, incrementY);
+    int indexY = calcArrayIndex(roundedY, minY, incrementY);
         
+    
     averageTally[indexW][indexX][indexY]++;
     
-    // If there already is a (U, V, T) for a given (W, X, Y), we use averageTally to average the current triplet with the existing one. 
+    // If there already is a (Z, U, V, T) for this (W, X, Y)...
+    // ... We compute  the weighted average of the points, using `averageTally`.
     if (averageTally[indexW][indexX][indexY] >= 2) {
       matrix[indexW][indexX][indexY][0] = (point[2] + matrix[indexW][indexX][indexY][0] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
       if (dimension >= 6)
@@ -436,8 +476,8 @@ Double[][][][] loadHighDimension() {
       matrix[indexW][indexX][indexY][2] = (point[4] + matrix[indexW][indexX][indexY][1] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
 
     } 
-    
-    // If there is no value yet (W, X, Y), we just set it equal.
+
+    // If there is no value yet for this (W, X, Y), we don't need to do averaging.
     else {
       matrix[indexW][indexX][indexY][0] = point[2];
       if (dimension >= 6)
