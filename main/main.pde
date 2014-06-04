@@ -59,6 +59,7 @@ float rotX = PI;
 float rotY = 0;
 float transX;
 float transY;
+float FOV;
 
 
 /* GUI VARS */
@@ -100,4 +101,8 @@ void keyRealeased() {
 
 void mouseMoved() {
   gui.mouseMoved();
+}
+
+void mouseWheel(MouseWheelEvent event) {
+  gui.mouseWheel(event);  
 }
