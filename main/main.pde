@@ -44,8 +44,6 @@ int lenW;
 
 boolean hoverOverButton;
 
-String viewType;
-
 String filePath;
 
 double maxAxisLength;
@@ -53,14 +51,22 @@ double maxAxisLength;
 double currentWValue;
 
 void setup() {
-  size(960, 540, P3D); //this code is from the "Move Eye" example
-  fill(204); //this code is from the "Move Eye" example
+  size(1000, 600, P3D);
+  fill(3);
 }
 
 void draw() {
-  update3DView();
-  //graph3D();
+  prepareCanvas();
+  graph();
   drawUI(); // 2D stuff must be last
+}
+
+void prepareCanvas() {
+  background(0);
+  lights();
+  translate(width/2.0, height/2.0, -100);
+  rotateX(rotx);
+  rotateY(roty); 
 }
 
 void drawUI() {
@@ -84,83 +90,6 @@ void drawUI() {
   
   hint(ENABLE_DEPTH_TEST);
 }
-
-//void graph3D(){
-//  if (viewType.equals("point")){
-//    noStroke(); 
-//    fill(0, 0, 255); //blue for now, should be changed
-//    
-//    double xcor, ycor, zcor;
-//    
-//    for (int i = 0; i < data3D.length; i++){
-//      for (int j = 0; j < data3D[i].length; j++){
-//        if (data3D[i][j] != null){
-//          
-//          xcor = (i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
-//          ycor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
-//          zcor = (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin));
-//          
-//          translate(-xcor, -ycor, -zcor);
-//          sphere(2);
-//          translate(xcor, ycor, zcor);
-//        
-//        }
-//      }
-//    }
-//  }
-//  else{
-//  
-//    if (viewType.equals("frame")){
-//      stroke(255); //white for now, should be changed
-//      noFill();
-//    }
-//    else if (viewType.equals("surface")){
-//      noStroke();
-//      fill(255, 0, 0); //red for now, should be changed
-//    }
-//    else{
-//      return;
-//    }
-//    
-//    for (int i = 0; i < data3D.length - 1; i++){
-//      for (int j = 0; j < data3D[i].length - 1; j++){
-//        startShape(); 
-//        if (data3D[i][j] != null){
-//          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (data3D[i][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
-//        }
-//        if (data3D[i+1][j] != null){
-//          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (j-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (data3D[i+1][j]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
-//        }
-//        if (data3D[i+1][j+1] != null){
-//          vertex((i+1-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (data3D[i+1][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
-//        }
-//        if (data3D[i][j+1] != null){
-//          vertex((i-(minX+maxX)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (j+1-(minY+maxY)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)), 
-//                 (data3D[i][j+1]-(minZ+maxZ)/2)*(maxAxisLength/max(xMax-xMin, yMax-yMin, zMax-zMin)));
-//        }
-//        endShape(CLOSE); 
-//      }
-//    }
-//
-//  }
-//
-//}
-
-void update3DView(){
-  background(0); //this code is from the "Move Eye" example
-  
-  // Change height of the camera with mouseY 
-  camera(30.0, mouseY, 220.0, // eyeX, eyeY, eyeZ //this code is from the "Move Eye" example
-         0.0, 0.0, 0.0, // centerX, centerY, centerZ
-         0.0, 1.0, 0.0); // upX, upY, upZ
-  }
   
 void updateMouse() {
   if (mouseOverRect(5, 5, 100, 30))
@@ -276,7 +205,6 @@ void calcIncrements() {
     // skip Y or W if dimension isn't big enough 
     if ((dim >= 1 && dimension < 3) || (dim >= 3 && dimension < 4))
       continue;
-      
     // all values from an axis (say, X)
     double[] values = new double[arrayTable.length];
     
@@ -290,7 +218,7 @@ void calcIncrements() {
     
     // add up the increments of the points  
     double sum = 0.0;
-    int uniqueValuesCount = 0; // we need to remove duplicates 
+    int uniqueValuesCount = 1; // we need to remove duplicates 
     
     for (int i = 1; i < values.length; i++) {
       // skip duplicates
@@ -304,6 +232,10 @@ void calcIncrements() {
     // given an increment and a min and max, we can say that there are 1 + (max - min) / increment 
     // elements in the resulting array. 
     int arrayLen = (int) (1 + (values[values.length - 1] - values[0]) / increment);
+    if (uniqueValuesCount == 1) {
+      increment = 0;
+      arrayLen = 1;
+    }
     
     // set `increment` and `len` to relevant instance variables
     switch(dim) {
@@ -384,9 +316,9 @@ void load3D() {
     
     double roundedY = roundValue(point[1], minY, incrementY);
     int indexY = calcArrayIndex(roundedY, minY, incrementY);
-    
+
     averageTally[indexX][indexY]++;
-    
+
     // If there already is a Z for this (X, Y)...
     // ... We compute  the weighted average of the points, using `averageTally`.
     // If there is no value yet for this (X, Y), we don't need to do averaging.
