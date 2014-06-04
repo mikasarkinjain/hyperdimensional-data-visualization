@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
-Table data;
+Graph graph;
+DataParser dataParser;
 
 double cameraX = 0;
 double cameraY = 0;
@@ -53,11 +54,13 @@ double currentWValue;
 void setup() {
   size(1000, 600, P3D);
   fill(3);
+  graph = new Graph();
+  dataParser = new DataParser();
 }
 
 void draw() {
   prepareCanvas();
-  graph();
+  graph.graph();
   drawUI(); // 2D stuff must be last
 }
 
@@ -65,8 +68,8 @@ void prepareCanvas() {
   background(0);
   lights();
   translate(width/2.0, height/2.0, -100);
-  rotateX(rotx);
-  rotateY(roty); 
+  rotateX(graph.rotx);
+  rotateY(graph.roty); 
 }
 
 void drawUI() {
@@ -116,5 +119,5 @@ void fileSelected(File selection) {
   if (selection != null)
     filePath = selection.getAbsolutePath();
     if (filePath.substring(filePath.length()-4).equals(".csv"))
-      loadData();  
+      dataParser.loadData();  
 }
