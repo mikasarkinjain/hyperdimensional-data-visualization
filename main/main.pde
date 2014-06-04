@@ -1,18 +1,18 @@
 import java.util.Arrays;
 
+/* HELPER CLASSES */
 Graph graph;
 DataParser dataParser;
 Camera camera;
 GUI gui;
 
-double cameraX = 0;
-double cameraY = 0;
-double cameraZ = 0;
 
+/* DATA STRUCTURES */
 int dimension;
-
 String[] varLabels;
 double[][] arrayTable;
+
+String viewType = "best-fit surface";
 
 Double data1D;
 Double[] data2D;
@@ -21,6 +21,14 @@ Double[][][] data4D;
 Double[][][][] data5D; 
 Double[][][][] data6D;
 Double[][][][] data7D;
+
+double incrementX;
+double incrementY;
+double incrementW;
+
+int lenX;
+int lenY;
+int lenW;
 
 double maxX; 
 double minX; 
@@ -37,21 +45,19 @@ double minV;
 double maxT;
 double minT;
 
-double incrementX;
-double incrementY;
-double incrementW;
 
-int lenX;
-int lenY;
-int lenW;
+/* CAMERA VARS */ 
+double cameraX = 0;
+double cameraY = 0;
+double cameraZ = 0;
 
-      
 float rotX = PI;
 float rotY = 0;
 float transX;
 float transY;
 
-boolean hoverOverButton;
+
+/* GUI VARS */
 String filePath;
 
 double maxAxisLength;

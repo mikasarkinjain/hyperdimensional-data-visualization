@@ -1,6 +1,7 @@
 class GUI {
   final float ROTATE_RATE = 0.01;
   final float PAN_RATE = 4;
+  boolean hoverOverButton = false;
 
   void drawUI() {
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D

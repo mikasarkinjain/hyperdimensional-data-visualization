@@ -1,6 +1,4 @@
 class Graph {
-    String viewType = "best-fit surface";
-
     double w = 2;
 
     double maxY2D = 20;
