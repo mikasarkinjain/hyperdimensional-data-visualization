@@ -160,11 +160,11 @@ void graph(){
   if (viewType.equals("best-fit mesh") || viewType.equals("best-fit surface")){
     if (dimension == 1) graph1D();
     if (dimension == 2) graph2D();
-    if (dimension == 3) graph3D(data3D, minZ3D, maxZ3D);
-    if (dimension == 4) graph4D();
-    if (dimension == 5) graph4D();
-    if (dimension == 6) graph4D();
-    if (dimension == 7) graph4D();
+    if (dimension == 3) graph3Dfor3Dro7D(data3D, minZ3D, maxZ3D);
+    if (dimension == 4) graph4Dfor4Dto7D(data4D);
+    if (dimension == 5) graph4Dfor4Dto7D(data5D);
+    if (dimension == 6) graph4Dfor4Dto7D(data6D);
+    if (dimension == 7) graph4Dfor4Dto7D(data7D);
   }
   //add point graph stuff here
 }
