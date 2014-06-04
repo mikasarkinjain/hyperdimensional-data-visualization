@@ -1,16 +1,22 @@
 class GUI {
   final float ROTATE_RATE = 0.01;
   final float PAN_RATE = 4;
-  boolean hoverOverButton = false;
+  final float CYCLE_RATE = 1; // changing W
+  
+  boolean hoveringOverLoad = false;
+  boolean holdingWKey = false;
 
   void drawUI() {
+    hoveringOverLoad = false;
+    holdingWKey = false;
+    
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D
     noLights(); // otherwise it breaks
     camera(); // center camera on origin
     updateMouse();
 
     stroke(1); // solid border
-    if (hoverOverButton) // set in updateMouse()
+    if (hoveringOverLoad) // set in updateMouse()
       fill(200);
     else
       fill(255);
@@ -27,9 +33,7 @@ class GUI {
 
   void updateMouse() {
     if (mouseOverRect(5, 5, 100, 30))
-      hoverOverButton = true;
-    else
-      hoverOverButton = false;
+      hoveringOverLoad = true;
   }
 
   boolean mouseOverRect(int rectX, int rectY, int rectWidth, int rectHeight) {
@@ -38,7 +42,7 @@ class GUI {
   }
 
   void mousePressed() {
-    if (hoverOverButton)
+    if (hoveringOverLoad)
       loadFile();
   }
 
@@ -61,6 +65,21 @@ class GUI {
       }
       camera.pan(changeX, changeY);
       
+    }
+    else {
+      if (key == 'w' || key == 'W')
+        holdingWKey = true;
+    }
+  }
+  
+  void keyReleased() {
+    if (key == 'w' || key == 'W')
+      holdingWKey = false;
+  }
+  
+  void mouseMoved() {
+    if (holdingWKey) {
+      w += (pmouseY - mouseY) * CYCLE_RATE;  
     }
   }
 

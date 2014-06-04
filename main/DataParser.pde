@@ -143,6 +143,10 @@ class DataParser {
     int valAtIndex(int index, double min, double increment) {
       return (int) (index * increment + min);
     }
+    
+    double weightedAverage(double currentAverage, double numItems, double newItem) {
+      return (newItem + currentAverage * numItems)  / (currentAverage + 1); 
+    }   
 
     /* END OF HELPER FUNCTIONS */
 
@@ -183,7 +187,7 @@ class DataParser {
 
 
     void load3D() {
-      data3D = new Double[lenX][lenY];
+      data3D = new Double[lenX][lenY][1];
       
       // When two points have the same (X, Y), we average their Zs. (this data structure is best-fit)
       // `averageTally` is a duplicate of `data3D` except that we store # number of times averaged
@@ -203,59 +207,31 @@ class DataParser {
         // ... We compute  the weighted average of the points, using `averageTally`.
         // If there is no value yet for this (X, Y), we don't need to do averaging.
         if (averageTally[indexX][indexY] >= 2)
-          data3D[indexX][indexY] = (point[2] + data3D[indexX][indexY] * averageTally[indexX][indexY]) / (averageTally[indexX][indexY] + 1);
+          data3D[indexX][indexY][1] = weightedAverage(data3D[indexX][indexY][1], averageTally[indexX][indexY], point[2]);
         else
-          data3D[indexX][indexY] = point[2];
+          data3D[indexX][indexY][1] = point[2];
       }
     }
       
     void load4D() {
-      data4D = new Double[lenW][lenX][lenY];
-      
-      // When two points have the same (W, X, Y), we average their Zs. (this data structure is best-fit)
-      // `averageTally` is a duplicate of `data4D` except that we store # number of times averaged
-      // instead of Z for a given (W, X, Y).
-      double[][][] averageTally = new double[lenW][lenX][lenY]; // lowercase-"d" double
-      
-      for (double[] point : arrayTable) {
-        double roundedW = roundValue(point[3], minW, incrementW);
-        int indexW = calcArrayIndex(roundedW, minW, incrementW);
-
-        double roundedX = roundValue(point[0], minX, incrementX);
-        int indexX = calcArrayIndex(roundedX, minX, incrementX);
-        
-        double roundedY = roundValue(point[1], minY, incrementY);
-        int indexY = calcArrayIndex(roundedY, minY, incrementY);
-        
-        averageTally[indexW][indexX][indexY]++;
-        
-        // If there already is a Z for this (W, X, Y)...
-        // ... We compute  the weighted average of the points, using `averageTally`.
-        // If there is no value yet for this (W, X, Y), we don't need to do averaging.
-        
-        if (averageTally[indexW][indexX][indexY] >= 2)
-          data4D[indexW][indexX][indexY] = (point[2] + data4D[indexW][indexX][indexY] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
-        else
-          data4D[indexW][indexX][indexY] = point[2];
-      }
+      data4D = loadHyperDimension();    
     }
 
-
     void load5D() {
-      data5D = loadHighDimension();
+      data5D = loadHyperDimension();
     }
 
     void load6D() {
-      data6D = loadHighDimension();
+      data6D = loadHyperDimension();
     }
 
     void load7D() {
-      data7D = loadHighDimension();
+      data7D = loadHyperDimension();
     }
 
-    // 5D-7D are very similar, so we use this generic method.
+    // 4D-7D are very similar, so we use this generic method.
     // See the block comment at the top for the special structure of 5D to 7D.
-    Double[][][][] loadHighDimension() {
+    Double[][][][] loadHyperDimension() {
       Double[][][][] matrix = new Double[lenW][lenX][lenY][dimension - 3];
 
       // When two points have the same (W, X, Y), we average their Zs, Us, Vs, and Ts (if they exist). (this data structure is best-fit)
@@ -281,21 +257,25 @@ class DataParser {
         // If there already is a (Z, U, V, T) for this (W, X, Y)...
         // ... We compute  the weighted average of the points, using `averageTally`.
         if (averageTally[indexW][indexX][indexY] >= 2) {
-          matrix[indexW][indexX][indexY][0] = (point[2] + matrix[indexW][indexX][indexY][0] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
+          matrix[indexW][indexX][indexY][0] = weightedAverage(matrix[indexW][indexX][indexY][0], averageTally[indexW][indexX][indexY], point[2]); 
+          if (dimension >= 5)
+            matrix[indexW][indexX][indexY][1] = weightedAverage(matrix[indexW][indexX][indexY][1], averageTally[indexW][indexX][indexY], point[4]);
           if (dimension >= 6)
-            matrix[indexW][indexX][indexY][1] = (point[4] + matrix[indexW][indexX][indexY][1] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
+            matrix[indexW][indexX][indexY][2] = weightedAverage(matrix[indexW][indexX][indexY][2], averageTally[indexW][indexX][indexY], point[5]);
           if (dimension >= 7)
-          matrix[indexW][indexX][indexY][2] = (point[4] + matrix[indexW][indexX][indexY][1] * averageTally[indexW][indexX][indexY]) / (averageTally[indexW][indexX][indexY] + 1);
+            matrix[indexW][indexX][indexY][3] = weightedAverage(matrix[indexW][indexX][indexY][3], averageTally[indexW][indexX][indexY], point[6]);
 
         } 
 
         // If there is no value yet for this (W, X, Y), we don't need to do averaging.
         else {
           matrix[indexW][indexX][indexY][0] = point[2];
+          if (dimension >= 5)
+            matrix[indexW][indexX][indexY][1] = point[4];          
           if (dimension >= 6)
-            matrix[indexW][indexX][indexY][1] = point[4];
-          if (dimension >= 7)
             matrix[indexW][indexX][indexY][2] = point[5];
+          if (dimension >= 7)
+            matrix[indexW][indexX][indexY][3] = point[6];
         }
       } 
       return matrix;

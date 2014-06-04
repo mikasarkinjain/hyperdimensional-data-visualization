@@ -1,6 +1,4 @@
 class Graph {
-    double w = 2;
-
     double maxY2D = 20;
     double minY2D = 1;
 
@@ -61,7 +59,7 @@ class Graph {
       if (viewType.equals("best-fit mesh") || viewType.equals("best-fit surface")){
         if (dimension == 1) graph1D();
         if (dimension == 2) graph2D();
-        if (dimension == 3) graph3D(data3D, minZ3D, maxZ3D);
+        //if (dimension == 3) graph3D(data3D, minZ3D, maxZ3D); // type has to be adjusted
         if (dimension == 4) graph4D();
         if (dimension == 5) graph4D();
         if (dimension == 6) graph4D();

@@ -7,6 +7,10 @@ Camera camera;
 GUI gui;
 
 
+/* GRAPH VARS */
+double w = 0;
+
+
 /* DATA STRUCTURES */
 int dimension;
 String[] varLabels;
@@ -16,8 +20,8 @@ String viewType = "best-fit surface";
 
 Double data1D;
 Double[] data2D;
-Double[][] data3D;
-Double[][][] data4D;
+Double[][][] data3D;
+Double[][][][] data4D;
 Double[][][][] data5D; 
 Double[][][][] data6D;
 Double[][][][] data7D;
@@ -72,6 +76,7 @@ void setup() {
 }
 
 void draw() {
+  println(w);
   camera.prepareCanvas();
   graph.graph();
   gui.drawUI(); // 2D stuff must be last
@@ -87,4 +92,12 @@ void mouseDragged() {
 
 void keyPressed() {
   gui.keyPressed(); 
+}
+
+void keyRealeased() {
+  gui.keyReleased(); 
+}
+
+void mouseMoved() {
+  gui.mouseMoved();
 }
