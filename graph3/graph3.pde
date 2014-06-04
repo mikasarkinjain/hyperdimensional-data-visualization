@@ -203,6 +203,44 @@ void graph2D(){
   }
 }
 
+
+void graph4D(){
+  Double[][] data3DatW = new Double[data4D[0].length][data4D[0][0].length]; //assumes data4D is rectangular
+  
+  for (int i = 0; i < data3DatW.length; i++){
+    for (int j = 0; j < data3DatW[0].length; j++){
+      if (w == (double)(int)w){
+        data3DatW[i][j] = data4D[(int)w][i][j];
+        println("here");
+      }
+      else{
+        int flooredW = (int)w;
+        data3DatW[i][j] = (1-(w-flooredW))*data4D[flooredW][i][j] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j];
+      }
+    }
+  }
+  graph3D(data3DatW, minZ4D, maxZ4D);
+}
+
+
+void graph4Dfor5Dto7D(Double[][][] data){
+  Double[][] data3DatW[] = new Double[data[0].length][data[0][0].length][data[0][0][0]]; //assumes data4D is rectangular (or rather rectangular prismic)
+  
+  for (int i = 0; i < data3DatW.length; i++){
+    for (int j = 0; j < data3DatW[0].length; j++){
+      if (w == (double)(int)w){
+        data3DatW[i][j] = data[(int)w][i][j];
+        println("here");
+      }
+      else{
+        int flooredW = (int)w;
+        data3DatW[i][j] = (1-(w-flooredW))*data4D[flooredW][i][j] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j];
+      }
+    }
+  }
+  graph5to7D(data3DatW, minZ4D, maxZ4D);
+}
+
 void graph3D(Double[][] data, double minZinData, double maxZinData){
   if (viewType == "best-fit mesh"){
     stroke(255); //white for now, should be changed 
@@ -231,44 +269,6 @@ void graph3D(Double[][] data, double minZinData, double maxZinData){
 }
 
 
-void graph4D(){
-  Double[][] data3DatW = new Double[data4D[0].length][data4D[0][0].length]; //assumes data4D is rectangular
-  
-  for (int i = 0; i < data3DatW.length; i++){
-    for (int j = 0; j < data3DatW[0].length; j++){
-      if (w == (double)(int)w){
-        data3DatW[i][j] = data4D[(int)w][i][j];
-        println("here");
-      }
-      else{
-        int flooredW = (int)w;
-        data3DatW[i][j] = (1-(w-flooredW))*data4D[flooredW][i][j] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j];
-      }
-    }
-  }
-  graph3D(data3DatW, minZ4D, maxZ4D);
-}
-
-
-
-
-void graph4Dfor5Dto7D(Double[][][] data){
-  Double[][] data3DatW[] = new Double[data[0].length][data[0][0].length][data[0][0][0]]; //assumes data4D is rectangular (or rather rectangular prismic)
-  
-  for (int i = 0; i < data3DatW.length; i++){
-    for (int j = 0; j < data3DatW[0].length; j++){
-      if (w == (double)(int)w){
-        data3DatW[i][j] = data[(int)w][i][j];
-        println("here");
-      }
-      else{
-        int flooredW = (int)w;
-        data3DatW[i][j] = (1-(w-flooredW))*data4D[flooredW][i][j] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j];
-      }
-    }
-  }
-  graph5to7D(data3DatW, minZ4D, maxZ4D);
-}
 
 
 void graph5to7D(Double[][][] data, double minZinData, double maxZinData){
