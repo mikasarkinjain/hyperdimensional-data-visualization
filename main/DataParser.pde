@@ -179,7 +179,7 @@ class DataParser {
         // ... We compute  the weighted average of the points, using `averageTally`.
         // If there is no value yet for thisX, we don't need to do averaging.
         if (averageTally[indexX] >= 2)
-          data2D[indexX] = (point[1] + data2D[indexX] * averageTally[indexX]) / (averageTally[indexX] + 1);
+          data2D[indexX] = weightedAverage(data2D[indexX], averageTally[indexX], point[1]);
         else
           data2D[indexX] = point[1];
       }
@@ -290,6 +290,7 @@ class DataParser {
       if (dimension >= 5) {
         Double[][][][] matrix;
         switch(dimension) {
+          case 4: matrix = data4D; break;
           case 5: matrix = data5D; break;
           case 6: matrix = data6D; break;
           case 7: matrix = data7D; break;
