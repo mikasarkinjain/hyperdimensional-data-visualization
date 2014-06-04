@@ -46,8 +46,10 @@ int lenY;
 int lenW;
 
       
-float rotx = PI;
-float roty = 0;
+float rotX = PI;
+float rotY = 0;
+float transX;
+float transY;
 
 boolean hoverOverButton;
 String filePath;
@@ -75,4 +77,8 @@ void mousePressed() {
 
 void mouseDragged() {
   gui.mouseDragged();
+}
+
+void keyPressed() {
+  gui.keyPressed(); 
 }

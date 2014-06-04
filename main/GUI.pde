@@ -1,4 +1,7 @@
 class GUI {
+  final float ROTATE_RATE = 0.01;
+  final float PAN_RATE = 4;
+
   void drawUI() {
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D
     noLights(); // otherwise it breaks
@@ -38,13 +41,27 @@ class GUI {
       loadFile();
   }
 
-
   void mouseDragged() {
-    float rate = 0.01;
-    rotx += (pmouseY-mouseY) * rate;
-    roty -= (mouseX-pmouseX) * rate;
+    double changeX = (pmouseY-mouseY) * ROTATE_RATE;
+    double changeY = (pmouseX-mouseX) * ROTATE_RATE;
+
+    camera.rotate(changeX, changeY);
   }
 
+  void keyPressed() {
+    double changeX = 0; double changeY = 0;
+    if (key == CODED) {
+      
+      switch(keyCode) {
+        case LEFT: changeX = -PAN_RATE; break;
+        case RIGHT: changeX = PAN_RATE; break;
+        case UP: changeY = -PAN_RATE; break;
+        case DOWN: changeY = PAN_RATE; break;
+      }
+      camera.pan(changeX, changeY);
+      
+    }
+  }
 
   void loadFile() {
     selectInput("Select CSV", "fileSelected");
