@@ -276,3 +276,30 @@ void graph3Dfor3Dto7D(Double[][][] data , double minZinData, double maxZinData){
     }    
   }
 }
+
+
+void graphPoints(){
+  for (int i = 0; i < arrayTable.length; i++){
+    if (arrayTable[i].length == 1) {
+    
+    }
+    if (arrayTable[i].length == 2) {
+    
+    }
+    if (arrayTable[i].length == 3) {
+    
+    }
+    if (arrayTable[i].length == 4) {
+    
+    }
+    if (arrayTable[i].length == 5) {
+    
+    }
+    if (arrayTable[i].length == 6) {
+    
+    }
+    if (arrayTable[i].length == 7) {
+    
+    }
+  }
+}
