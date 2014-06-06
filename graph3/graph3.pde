@@ -280,26 +280,39 @@ void graph3Dfor3Dto7D(Double[][][] data , double minZinData, double maxZinData){
 
 void graphPoints(){
   for (int i = 0; i < arrayTable.length; i++){
+    
     if (arrayTable[i].length == 1) {
       plotPoint(0, 0, arrayTable[i][0]);                
     }
+    
     if (arrayTable[i].length == 2) {
       plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
     }
+    
     if (arrayTable[i].length == 3) {
       plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
     }
+    
     if (arrayTable[i].length == 4) {
       plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
     }
+    
     if (arrayTable[i].length == 5) {
-      plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0][3] == w){ 
+        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      }
     }
+    
     if (arrayTable[i].length == 6) {
-      plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0][3] == w){ 
+        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      }
     }
+    
     if (arrayTable[i].length == 7) {
-      plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0][3] == w){ 
+        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      }
     }
   }
 }
