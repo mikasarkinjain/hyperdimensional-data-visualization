@@ -306,25 +306,31 @@ void graphPoints(){
     }
     
     if (arrayTable[i].length == 5) {
-      fill(255, 0, 0);
+      double R = (arrayTable[4] - minU)*255/(maxU-minU);
+      fill(R, 0, 0);
       noStroke();
-      if (arrayTable[i][0][3] == w){ 
+      if (arrayTable[i][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
     }
     
     if (arrayTable[i].length == 6) {
-      fill(255, 0, 0);
+      double R = (arrayTable[4] - minU)*255/(maxU-minU);
+      double G = (arrayTable[5] - minV)*255/(maxV-minV);
+      fill(R, G, 0);
       noStroke();
-      if (arrayTable[i][0][3] == w){ 
+      if (arrayTable[i][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
     }
     
     if (arrayTable[i].length == 7) {
-      fill(255, 0, 0);
+      double R = (arrayTable[4] - minU)*255/(maxU-minU);
+      double G = (arrayTable[5] - minV)*255/(maxV-minV);
+      double B = (arrayTable[6] - minT)*255/(maxT-minT);
+      fill(R, G, B);
       noStroke();
-      if (arrayTable[i][0][3] == w){ 
+      if (arrayTable[i][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
     }
