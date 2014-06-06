@@ -282,34 +282,48 @@ void graphPoints(){
   for (int i = 0; i < arrayTable.length; i++){
     
     if (arrayTable[i].length == 1) {
+      fill(255, 0, 0);
+      noStroke();
       plotPoint(0, 0, arrayTable[i][0]);                
     }
     
     if (arrayTable[i].length == 2) {
+      fill(255, 0, 0);
+      noStroke();
       plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
     }
     
     if (arrayTable[i].length == 3) {
+      fill(255, 0, 0);
+      noStroke();v
       plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
     }
     
     if (arrayTable[i].length == 4) {
+      fill(255, 0, 0);
+      noStroke();
       plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
     }
     
     if (arrayTable[i].length == 5) {
+      fill(255, 0, 0);
+      noStroke();
       if (arrayTable[i][0][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
     }
     
     if (arrayTable[i].length == 6) {
+      fill(255, 0, 0);
+      noStroke();
       if (arrayTable[i][0][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
     }
     
     if (arrayTable[i].length == 7) {
+      fill(255, 0, 0);
+      noStroke();
       if (arrayTable[i][0][3] == w){ 
         plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
       }
