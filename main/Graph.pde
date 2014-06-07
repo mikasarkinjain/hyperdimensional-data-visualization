@@ -126,7 +126,7 @@ class Graph {
       graph3Dfor3Dto7D(data3DatW);
     }
 
-    void graph3Dfor3Dto7D(Double[][][] data){ 
+    void graph3Dfor3Dto7D(Double[][][] data){
       double dialationFactorX = maxDimensionLength/(data.length-1);
       double dialationFactorY = maxDimensionLength/(data[0].length-1);
       double dialationFactorZ = maxDimensionLength/(maxZ-minZ);

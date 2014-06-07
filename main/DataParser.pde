@@ -3,7 +3,9 @@ class DataParser {
       loadAsTable(); // arrayTable
       getMinMax(); // minX, maxX, etc.
       loadAsArray(); // data1D, data2D, etc.
-      //printData();
+      printData();
+      //for (Double[] point : arrayTable)
+        //println
     }
 
     // Loads file into `arrayTable` 
@@ -25,7 +27,11 @@ class DataParser {
       // fill arrayTable
       // format is W, X, Y, Z, U, V, T.
       // even when dimension is too small to have W
-      arrayTable = new double[table.getRowCount()][dimension];
+      if (dimension >= 4)
+        arrayTable = new double[table.getRowCount()][dimension];
+      else
+        arrayTable = new double[table.getRowCount()][dimension + 1];
+        
       for (int row = 0; row < table.getRowCount(); row++)
         for (int col = 0; col < dimension; col++) {
            // there's no table.getDouble, so we do table.getString and parse it as Double
@@ -162,7 +168,7 @@ class DataParser {
       
       double sum = 0.0;
       for (double[] point : arrayTable) {
-        sum += point[0]; 
+        sum += point[1];
       }
       
       data1D = sum / arrayTable.length;
@@ -177,7 +183,7 @@ class DataParser {
       double[] averageTally = new double[lenX];
       
       for (double[] point : arrayTable) {
-        double roundedX = roundValue(point[0], minX, incrementX);
+        double roundedX = roundValue(point[1], minX, incrementX);
         int indexX = calcArrayIndex(roundedX, minX, incrementX);
         
         averageTally[indexX]++;
@@ -202,10 +208,10 @@ class DataParser {
       double[][] averageTally = new double[lenX][lenY]; // lowercase-"d" double
 
       for (double[] point : arrayTable) {
-        double roundedX = roundValue(point[0], minX, incrementX);
+        double roundedX = roundValue(point[1], minX, incrementX);
         int indexX = calcArrayIndex(roundedX, minX, incrementX);
         
-        double roundedY = roundValue(point[1], minY, incrementY);
+        double roundedY = roundValue(point[2], minY, incrementY);
         int indexY = calcArrayIndex(roundedY, minY, incrementY);
 
         averageTally[indexX][indexY]++;
@@ -214,9 +220,9 @@ class DataParser {
         // ... We compute  the weighted average of the points, using `averageTally`.
         // If there is no value yet for this (X, Y), we don't need to do averaging.
         if (averageTally[indexX][indexY] >= 2)
-          data3D[indexX][indexY][0] = weightedAverage(data3D[indexX][indexY][0], averageTally[indexX][indexY], point[2]);
+          data3D[indexX][indexY][0] = weightedAverage(data3D[indexX][indexY][0], averageTally[indexX][indexY], point[3]);
         else
-          data3D[indexX][indexY][0] = point[2];
+          data3D[indexX][indexY][0] = point[3];
       }
     }
       
@@ -249,13 +255,13 @@ class DataParser {
       for (double[] point : arrayTable) {
         // double[] point is of form [x, y, z, w, u, v, t]
 
-        double roundedW = roundValue(point[3], minW, incrementW);
+        double roundedW = roundValue(point[0], minW, incrementW);
         int indexW = calcArrayIndex(roundedW, minW, incrementW);
 
-        double roundedX = roundValue(point[0], minX, incrementX);
+        double roundedX = roundValue(point[1], minX, incrementX);
         int indexX = calcArrayIndex(roundedX, minX, incrementX);
         
-        double roundedY = roundValue(point[1], minY, incrementY);
+        double roundedY = roundValue(point[2], minY, incrementY);
         int indexY = calcArrayIndex(roundedY, minY, incrementY);
             
         
@@ -264,7 +270,7 @@ class DataParser {
         // If there already is a (Z, U, V, T) for this (W, X, Y)...
         // ... We compute  the weighted average of the points, using `averageTally`.
         if (averageTally[indexW][indexX][indexY] >= 2) {
-          matrix[indexW][indexX][indexY][0] = weightedAverage(matrix[indexW][indexX][indexY][0], averageTally[indexW][indexX][indexY], point[2]); 
+          matrix[indexW][indexX][indexY][0] = weightedAverage(matrix[indexW][indexX][indexY][0], averageTally[indexW][indexX][indexY], point[3]); 
           if (dimension >= 5)
             matrix[indexW][indexX][indexY][1] = weightedAverage(matrix[indexW][indexX][indexY][1], averageTally[indexW][indexX][indexY], point[4]);
           if (dimension >= 6)
@@ -276,7 +282,7 @@ class DataParser {
 
         // If there is no value yet for this (W, X, Y), we don't need to do averaging.
         else {
-          matrix[indexW][indexX][indexY][0] = point[2];
+          matrix[indexW][indexX][indexY][0] = point[3];
           if (dimension >= 5)
             matrix[indexW][indexX][indexY][1] = point[4];          
           if (dimension >= 6)
@@ -292,6 +298,18 @@ class DataParser {
       println();
       for (String label : varLabels) {
         print(label + "\t");  
+      }
+      print("\n");
+      
+      if (dimension == 3) {
+        for (int x = 0; x < data3D.length; x++) {
+          for (int y = 0; y < data3D[0].length; y++) {
+             print(valAtIndex(x, minX, incrementX) + "\t " + 
+                         valAtIndex(y, minY, incrementY) + "\t " +
+                         data3D[x][y][0] + " ");
+             print("\n");
+          }
+        }  
       }
       
       if (dimension >= 5) {
