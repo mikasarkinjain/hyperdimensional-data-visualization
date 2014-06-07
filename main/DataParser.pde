@@ -2,11 +2,8 @@ class DataParser {
 
   void loadData() {
     loadAsTable(); // arrayTable
-    println(1);
     getMinMax(); // minX, maxX, etc.
-    println(2);
     loadAsArray(); // data1D, data2D, etc.
-    println(3);
     //printData();
   }
 
@@ -168,8 +165,7 @@ class DataParser {
         increment = 0;
         arrayLen = 1;
       }
-      println(increment);
-
+      
       // set `increment` and `len` to relevant instance variables
       switch(dim) {
       case 0: 

@@ -18,12 +18,6 @@ class Graph {
     float rotx = PI;
     float roty = 0;
 
-    void mouseDragged() {
-      float rate = 0.01;
-      rotx += (pmouseY-mouseY) * rate;
-      roty -= (mouseX-pmouseX) * rate;
-    }
-
     void drawAxis(){
       stroke(255);
       line((float)-axisLength/2, 0, 0, (float)axisLength/2, 0, 0);
