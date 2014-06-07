@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.awt.event.*;
 
 /* HELPER CLASSES */
 Graph graph;
@@ -106,7 +105,7 @@ void mouseMoved() {
   gui.mouseMoved();
 }
 
-void mouseWheel(MouseWheelEvent event) {
+void mouseWheel(MouseEvent event) {
   gui.mouseWheel(event);  
 }
 

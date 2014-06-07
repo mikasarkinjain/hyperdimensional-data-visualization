@@ -28,7 +28,7 @@ class Camera {
   }
   
   void zoom(double multiplier) {
-    FOV *= multiplier;  
+    FOV *= multiplier;
   }
 }
 

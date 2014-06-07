@@ -2,7 +2,7 @@ class GUI {
   final float ROTATE_RATE = 0.01;
   final float PAN_RATE = 4;
   final float CYCLE_RATE = 1; // changing W
-  final float ZOOM_RATE = 1;
+  final float ZOOM_RATE = 1.02;
   
   boolean hoveringOverLoad = false;
   boolean holdingWKey = false;
@@ -86,15 +86,15 @@ class GUI {
     }
   }
   
-  void mouseWheel(MouseWheelEvent event) {
-    int wheelRotation = event.getWheelRotation();  
+  void mouseWheel(MouseEvent event) {
+    int wheelRotation = event.getCount(); // seems always to be 1  
     double multiplier = 1;
     
-    if (wheelRotation < 0)
-      multiplier = -wheelRotation * ZOOM_RATE; // placeholder, should be changed 
+    if (wheelRotation > 0)
+      multiplier = wheelRotation * ZOOM_RATE;
       
     else 
-      multiplier = 1 / wheelRotation * ZOOM_RATE; // placeholder, should be changed  
+      multiplier = -wheelRotation * 1 / ZOOM_RATE;  
       
     camera.zoom(multiplier);
   }
