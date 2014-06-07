@@ -23,11 +23,18 @@ class DataParser {
       table.removeRow(0);
       
       // fill arrayTable
+      // format is W, X, Y, Z, U, V, T.
+      // even when dimension is too small to have W
       arrayTable = new double[table.getRowCount()][dimension];
       for (int row = 0; row < table.getRowCount(); row++)
         for (int col = 0; col < dimension; col++) {
            // there's no table.getDouble, so we do table.getString and parse it as Double
-          arrayTable[row][col] = Double.parseDouble(table.getString(row, col));
+           if (col < 3) // X, Y, or Z, which have to be shifted one right
+             arrayTable[row][col + 1] = Double.parseDouble(table.getString(row, col));
+           else if (col == 3) // W, which goes in the first column
+             arrayTable[row][0] = Double.parseDouble(table.getString(row, col));
+           else // U, V, T, which don't have to shift
+             arrayTable[row][col] = Double.parseDouble(table.getString(row, col));
         }
     }
 

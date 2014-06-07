@@ -189,62 +189,64 @@ class Graph {
     }
 
 
-    void graphPoints(){
-      for (int i = 0; i < arrayTable.length; i++){
-        
-        if (arrayTable[i].length == 1) {
-          fill(255, 0, 0);
-          noStroke();
-          plotPoint(0, 0, arrayTable[i][0]);                
+  void graphPoints(){
+    for (int i = 0; i < arrayTable.length; i++){
+      
+      if (arrayTable[i].length == 1) {
+        fill(255, 0, 0);
+        noStroke();
+        plotPoint(0, 0, arrayTable[i][1]);                
+      }
+      
+      if (arrayTable[i].length == 2) {
+        fill(255, 0, 0);
+        noStroke();
+        plotPoint(arrayTable[i][1], arrayTable[i][2], 0);
+      }
+      
+      if (arrayTable[i].length == 3) {
+        fill(255, 0, 0);
+        noStroke();
+        plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
+      }
+      
+      if (arrayTable[i].length == 4) {
+        fill(255, 0, 0);
+        noStroke();
+        if (arrayTable[i][0] == w){ 
+          plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
         }
-        
-        if (arrayTable[i].length == 2) {
-          fill(255, 0, 0);
-          noStroke();
-          plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
+      }
+      
+      if (arrayTable[i].length == 5) {
+        float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+        fill(R, 0, 0);
+        noStroke();
+        if (arrayTable[i][0] == w){ 
+          plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
         }
-        
-        if (arrayTable[i].length == 3) {
-          fill(255, 0, 0);
-          noStroke();
-          plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      }
+      
+      if (arrayTable[i].length == 6) {
+        float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+        float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
+        fill(R, G, 0);
+        noStroke();
+        if (arrayTable[i][0] == w){ 
+          plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
         }
-        
-        if (arrayTable[i].length == 4) {
-          fill(255, 0, 0);
-          noStroke();
-          plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-        }
-        
-        if (arrayTable[i].length == 5) {
-          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
-          fill(R, 0, 0);
-          noStroke();
-          if (arrayTable[i][3] == w){ 
-            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-          }
-        }
-        
-        if (arrayTable[i].length == 6) {
-          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
-          float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
-          fill(R, G, 0);
-          noStroke();
-          if (arrayTable[i][3] == w){ 
-            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-          }
-        }
-        
-        if (arrayTable[i].length == 7) {
-          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
-          float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
-          float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
-          fill(R, G, B);
-          noStroke();
-          if (arrayTable[i][3] == w){ 
-            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-          }
+      }
+      
+      if (arrayTable[i].length == 7) {
+        float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+        float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
+        float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
+        fill(R, G, B);
+        noStroke();
+        if (arrayTable[i][0] == w){ 
+          plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
         }
       }
     }
+  }
 }
