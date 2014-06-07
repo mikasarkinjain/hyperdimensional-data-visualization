@@ -1,4 +1,7 @@
 class Graph {
+    double w = 2;
+
+
     double maxY2D = 20;
     double minY2D = 1;
 
@@ -11,7 +14,15 @@ class Graph {
     double axisLength = 425;
     double maxDimensionLength = 175;
 
+      
+    float rotx = PI;
+    float roty = 0;
 
+    void mouseDragged() {
+      float rate = 0.01;
+      rotx += (pmouseY-mouseY) * rate;
+      roty -= (mouseX-pmouseX) * rate;
+    }
 
     void drawAxis(){
       stroke(255);
@@ -56,18 +67,18 @@ class Graph {
 
 
     void graph(){
-      if (viewType.equals("best-fit mesh") || viewType.equals("best-fit surface")){
+      drawAxis();
+      if (viewType == BEST_FIT_MESH || viewType == BEST_FIT_SURFACE){
         if (dimension == 1) graph1D();
         if (dimension == 2) graph2D();
-        //if (dimension == 3) graph3D(data3D, minZ3D, maxZ3D); // type has to be adjusted
-        if (dimension == 4) graph4D();
-        if (dimension == 5) graph4D();
-        if (dimension == 6) graph4D();
-        if (dimension == 7) graph4D();
+        if (dimension == 3) graph3Dfor3Dto7D(data3D);
+        if (dimension == 4) graph4Dfor4Dto7D(data4D);
+        if (dimension == 5) graph4Dfor4Dto7D(data5D);
+        if (dimension == 6) graph4Dfor4Dto7D(data6D);
+        if (dimension == 7) graph4Dfor4Dto7D(data7D);
       }
-      //add point graph stuff here
-      
-      drawAxis();
+      else if (viewType == POINTS)
+        graphPoints();
     }
 
 
@@ -85,179 +96,155 @@ class Graph {
       noFill();
      
       double dialationFactorX = maxDimensionLength/(data2D.length-1);
-      double dialationFactorY = maxDimensionLength/(maxY2D-minY2D);
+      //double dialationFactorY = maxDimensionLength/(maxY2D-minY);
+      double dialationFactorY = maxDimensionLength/(maxY - minY);
       
       for (int i = 0; i < data2D.length-1; i++){
         try{
-          plotLine(i*dialationFactorX, (data2D[i]-minY2D)*dialationFactorY, 0.0,
-                   (i+1)*dialationFactorX, (data2D[i+1]-minY2D)*dialationFactorY, 0.0);
+          plotLine(i*dialationFactorX, (data2D[i]-minY)*dialationFactorY, 0.0,
+                   (i+1)*dialationFactorX, (data2D[i+1]-minY)*dialationFactorY, 0.0);
         }catch(NullPointerException e) {} //not the best thing to do if there is no data point but what else?
-        
-        
-    //    double xCenteringTranslation = -1*(maxX+minX)/2;
-    //    double yCenteringTranslation = -1*(maxY+minY)/2;
-    //    
-    //    double dialationFactor = maxDimensionLength/max((float)(maxX-minX), (float)(maxY-minY));
-    //    
-    //    plotLine(   (i/(data2D.length-1)*(maxX-minX)+minX + xCenteringTranslation) * dialationFactor,    0.0,    (data2D[i] + yCenteringTranslation) * dialationFactor,
-    //                ((i+1)/(data2D.length-1)*(maxX-minX)+minX + xCenteringTranslation) * dialationFactor,    0.0,    (data2D[i+1] + yCenteringTranslation) * dialationFactor); //sudo code
       }
     }
 
-    void graph3D(Double[][] data, double minZinData, double maxZinData){
-      if (viewType == "best-fit mesh"){
-        stroke(255); //white for now, should be changed 
-        noFill();
-      }
-      else { //should this be an else if "best-fit surface"?
-        noStroke();
-        fill(255, 0, 0); //red for now, should be changed
-      }
+    void graph4Dfor4Dto7D(Double[][][][] data){
+      Double[][][] data3DatW = new Double[data[0].length][data[0][0].length][data[0][0][0].length]; //assumes data4D is rectangular (or rather rectangular prismic)
       
+      for (int i = 0; i < data3DatW.length; i++){
+        for (int j = 0; j < data3DatW[i].length; j++){
+          for (int k = 0; k < data3DatW[i][j].length; k++){
+            if (w == (double)(int)w){ //add another for loop to iterate through u, v, t
+              data3DatW[i][j][k] = data[(int)w][i][j][k];
+            }
+            else{
+              int flooredW = (int)w;
+              data3DatW[i][j][k] = (1-(w-flooredW))*data4D[flooredW][i][j][k] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j][k]; 
+            }
+          }
+        }
+      }
+      graph3Dfor3Dto7D(data3DatW);
+    }
+
+    void graph3Dfor3Dto7D(Double[][][] data){ 
       double dialationFactorX = maxDimensionLength/(data.length-1);
       double dialationFactorY = maxDimensionLength/(data[0].length-1);
-      double dialationFactorZ = maxDimensionLength/(maxZinData-minZinData);
-      
+      double dialationFactorZ = maxDimensionLength/(maxZ-minZ);
 
       for (int i = 0; i < data.length-1; i++){
         for (int j = 0; j < data[0].length-1; j++){ //assumes data3D is rectangular
+        
           try{
-            plotQuad((double)((i)*dialationFactorX), (data[i][j]-minZinData)*dialationFactorZ, (double)((j)*dialationFactorY), //replaced y-val with z-val to make graphing more intuitive
-                     (double)((i+1)*dialationFactorX), (data[i+1][j]-minZinData)*dialationFactorZ-minZinData, (double)((j)*dialationFactorY), 
-                     (double)((i+1)*dialationFactorX), (data[i+1][j+1]-minZinData)*dialationFactorZ-minZinData, (double)((j+1)*dialationFactorY),
-                     (double)((i)*dialationFactorX), (data[i][j+1]-minZinData)*dialationFactorZ-minZinData, (double)((j+1)*dialationFactorY));
-          }catch(NullPointerException e) {} //not the best thing to do if there is no data point but what else?
+            float plotColorR = 0;
+            float plotColorG = 0;
+            float plotColorB = 0;
+            
+            if (dimension == 3){ //gray for now, should be changed 
+              plotColorR = 200;  
+              plotColorG = 200;
+              plotColorB = 200;
+            }
+            
+            if (dimension >= 5){
+              plotColorR = (float) (((data[i][j][1]-minU)/(maxU-minU) * 255  +
+                                   (data[i+1][j][1]-minU)/(maxU-minU) * 255  +
+                                   (data[i+1][j+1][1]-minU)/(maxU-minU) * 255  + 
+                                   (data[i][j+1][1]-minU)/(maxU-minU) * 255 ) / 4);
+            }
+            
+            if (dimension >= 6){
+              plotColorG = (float) (((data[i][j][2]-minV)/(maxV-minV) * 255  +
+                                   (data[i+1][j][2]-minV)/(maxV-minV) * 255  +
+                                   (data[i+1][j+1][2]-minV)/(maxV-minV) * 255  + 
+                                   (data[i][j+1][2]-minV)/(maxV-minV) * 255 ) / 4);
+            }
+            
+            if (dimension >= 7){
+              plotColorB = (float) (((data[i][j][3]-minT)/(maxT-minT) * 255  +
+                                       (data[i+1][j][3]-minT)/(maxT-minT) * 255  +
+                                       (data[i+1][j+1][3]-minT)/(maxT-minT) * 255  + 
+                                       (data[i][j+1][3]-minT)/(maxT-minT) * 255 ) / 4);
+            }
+                                       
+            if (viewType == BEST_FIT_MESH){
+              stroke(plotColorR, plotColorG, plotColorB); 
+              noFill();
+            }
+            else if (viewType == BEST_FIT_SURFACE){
+              noStroke();
+              fill(plotColorR, plotColorG, plotColorB); 
+            }
+          
+          
+            plotQuad((double)((i)*dialationFactorX), (data[i][j][0]-minZ)*dialationFactorZ, (double)((j)*dialationFactorY), //replaced y-val with z-val to make graphing more intuitive
+                     (double)((i+1)*dialationFactorX), (data[i+1][j][0]-minZ)*dialationFactorZ-minZ, (double)((j)*dialationFactorY), 
+                     (double)((i+1)*dialationFactorX), (data[i+1][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY),
+                     (double)((i)*dialationFactorX), (data[i][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY));
+          
+        }catch(NullPointerException e) {} //not the best thing to do if there is no data point but what else?
+        
+      
         }    
       }
     }
 
 
-    void graph4D(){
-      println(data4D.length);
-      Double[][] data3DatW = new Double[data4D[0].length][data4D[0][0].length]; //assumes data4D is rectangular
-      
-      println("1");
-      for (int i = 0; i < data3DatW.length; i++){
-        for (int j = 0; j < data3DatW[0].length; j++){
-          if (w == (double)(int)w){
-            println("2");
-            data3DatW[i][j] = data4D[(int)w][i][j];
-            println("here");
+    void graphPoints(){
+      for (int i = 0; i < arrayTable.length; i++){
+        
+        if (arrayTable[i].length == 1) {
+          fill(255, 0, 0);
+          noStroke();
+          plotPoint(0, 0, arrayTable[i][0]);                
+        }
+        
+        if (arrayTable[i].length == 2) {
+          fill(255, 0, 0);
+          noStroke();
+          plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
+        }
+        
+        if (arrayTable[i].length == 3) {
+          fill(255, 0, 0);
+          noStroke();
+          plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+        }
+        
+        if (arrayTable[i].length == 4) {
+          fill(255, 0, 0);
+          noStroke();
+          plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+        }
+        
+        if (arrayTable[i].length == 5) {
+          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+          fill(R, 0, 0);
+          noStroke();
+          if (arrayTable[i][3] == w){ 
+            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
           }
-          else{
-            println("3");
-            int flooredW = (int)w;
-            data3DatW[i][j] = (1-(w-flooredW))*data4D[flooredW][i][j] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j];
+        }
+        
+        if (arrayTable[i].length == 6) {
+          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+          float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
+          fill(R, G, 0);
+          noStroke();
+          if (arrayTable[i][3] == w){ 
+            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+          }
+        }
+        
+        if (arrayTable[i].length == 7) {
+          float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
+          float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
+          float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
+          fill(R, G, B);
+          noStroke();
+          if (arrayTable[i][3] == w){ 
+            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
           }
         }
       }
-      graph3D(data3DatW, minZ4D, maxZ4D);
     }
-
-
-    //void graph4D(){
-    //  Double[][] data4DatW = new Double[data4D.length][data4D[0].length]; //assumes data4D is rectangular
-    //  double wDoubleIndex = (w-minW)/(maxW-minW)*(data4D.length-1);
-    //  
-    //  for (int i = 0; i < data4DatW.length; i++){
-    //    for (int j = 0; j < data4DatW[i].length; j++){
-    //      data4DatW[i][j] = (1 - (wDoubleIndex - (int)wDoubleIndex)) * data4D[(int)wDoubleIndex][i][j] + 
-    //                        (1 - ((int)(wDoubleIndex+.5) - wDoubleIndex)) * data4D[(int)(wDoubleIndex+.5)][i][j];
-    //    }
-    //  }
-    //  graph3D(data4DatW);
-    //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //void graph3D(Double[][] data){
-    //  double xIncrement = (maxX-minX)/(data.length-1);
-    //  double yIncrement = (maxY-minY)/(data[0].length-1);
-    //
-    //  double scaleFactor = maxDimensionLength/max((float)(maxX-minX), (float)(maxY-minY), (float)(maxZ-minZ));
-    //
-    //  if (viewType.equals("point")){
-    //    noStroke(); 
-    //    fill(0, 0, 255); //blue for now, should be changed
-    //    
-    //    double xcor, ycor, zcor;
-    //    
-    //    for (int i = 0; i < data.length; i++){
-    //      for (int j = 0; j < data[i].length; j++){
-    //        if (data[i][j] != null){
-    //          
-    //          xcor = (i-(data.length-1)/2.0)*xIncrement*scaleFactor;
-    //          ycor = (j-(data[0].length-1)/2.0)*yIncrement*scaleFactor;
-    //          zcor = (data[i][j]-(maxZ-minZ)/2)*scaleFactor;
-    //          
-    //          translate((float)-xcor, (float)-zcor, (float)-ycor);
-    //          sphere(2);
-    //          translate((float)xcor, (float)zcor, (float)ycor);
-    //        
-    //        }
-    //      }
-    //    }
-    //  }
-    //  else{
-    //  
-    //    if (viewType.equals("frame")){
-    //      stroke(255); //white for now, should be changed
-    //      noFill();
-    //    }
-    //    else if (viewType.equals("surface")){
-    //      noStroke();
-    //      fill(255, 0, 0); //red for now, should be changed
-    //    }
-    //    else{
-    //      return;
-    //    }
-    //    
-    //    for (int i = 0; i < data.length - 1; i++){
-    //      for (int j = 0; j < data[i].length - 1; j++){
-    //        beginShape(); 
-    //        if (data[i][j] != null){
-    //          vertex((float)((i-(data.length-1)/2.0)*xIncrement*scaleFactor*-1),
-    //                 (float)((data[i][j]-(maxZ-minZ)/2)*scaleFactor*-1), 
-    //                 (float)((j-(data[0].length-1)/2.0)*yIncrement*scaleFactor*-1));
-    //        }
-    //        if (data[i+1][j] != null){
-    //          vertex((float)((i+1-(data.length-1)/2.0)*xIncrement*scaleFactor*-1), 
-    //                 (float)((data[i+1][j]-(maxZ-minZ)/2)*scaleFactor*-1),
-    //                 (float)((j-(data[0].length-1)/2.0)*yIncrement*scaleFactor*-1));
-    //        }
-    //        if (data[i+1][j+1] != null){
-    //          vertex((float)((i+1-(data.length-1)/2.0)*xIncrement*scaleFactor*-1),
-    //                 (float)((data[i+1][j+1]-(maxZ-minZ)/2)*scaleFactor*-1), 
-    //                 (float)((j+1-(data[0].length-1)/2.0)*yIncrement*scaleFactor*-1));
-    //        }
-    //        if (data[i][j+1] != null){
-    //          vertex((float)((i-(data.length-1)/2.0)*xIncrement*scaleFactor*-1), 
-    //                 (float)((data[i][j+1]-(maxZ-minZ)/2)*scaleFactor*-1),
-    //                 (float)((j+1-(data[0].length-1)/2.0)*yIncrement*scaleFactor*-1));
-    //        }
-    //        endShape(CLOSE); 
-    //      }
-    //    }
-    //
-    //  }
-    //
-    //}
 }
