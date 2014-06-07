@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.awt.event.*;
 
 /* HELPER CLASSES */
 Graph graph;
@@ -17,10 +16,7 @@ int dimension;
 String[] varLabels;
 double[][] arrayTable;
 
-final int BEST_FIT_MESH = 0;
-final int BEST_FIT_SURFACE = 1;
-final int POINTS = 2;
-int viewType = BEST_FIT_SURFACE;
+String viewType = "best-fit surface";
 
 Double data1D;
 Double[] data2D;
@@ -59,7 +55,7 @@ double cameraX = 0;
 double cameraY = 0;
 double cameraZ = 0;
 
-float rotX = 0;
+float rotX = PI;
 float rotY = 0;
 float transX;
 float transY;
@@ -81,6 +77,7 @@ void setup() {
 }
 
 void draw() {
+  println(w);
   camera.prepareCanvas();
   graph.graph();
   gui.drawUI(); // 2D stuff must be last
@@ -108,8 +105,4 @@ void mouseMoved() {
 
 void mouseWheel(MouseWheelEvent event) {
   gui.mouseWheel(event);  
-}
-
-void fileSelected(File selection) {
- gui.fileSelected(selection);
 }

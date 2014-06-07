@@ -14,7 +14,6 @@ class GUI {
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D
     noLights(); // otherwise it breaks
     camera(); // center camera on origin
-    perspective(); // reset perspective
     updateMouse();
 
     stroke(1); // solid border
@@ -22,7 +21,6 @@ class GUI {
       fill(200);
     else
       fill(255);
-      
     rect(5, 5, 100, 30);
 
     fill(0);
