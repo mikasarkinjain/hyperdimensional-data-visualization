@@ -193,7 +193,7 @@ class DataParser {
       // `averageTally` is a duplicate of `data3D` except that we store # number of times averaged
       // instead of Z for a given (X, Y).
       double[][] averageTally = new double[lenX][lenY]; // lowercase-"d" double
-      
+
       for (double[] point : arrayTable) {
         double roundedX = roundValue(point[0], minX, incrementX);
         int indexX = calcArrayIndex(roundedX, minX, incrementX);
@@ -207,9 +207,9 @@ class DataParser {
         // ... We compute  the weighted average of the points, using `averageTally`.
         // If there is no value yet for this (X, Y), we don't need to do averaging.
         if (averageTally[indexX][indexY] >= 2)
-          data3D[indexX][indexY][1] = weightedAverage(data3D[indexX][indexY][1], averageTally[indexX][indexY], point[2]);
+          data3D[indexX][indexY][0] = weightedAverage(data3D[indexX][indexY][0], averageTally[indexX][indexY], point[2]);
         else
-          data3D[indexX][indexY][1] = point[2];
+          data3D[indexX][indexY][0] = point[2];
       }
     }
       
