@@ -1,15 +1,19 @@
 class DataParser {
+
   void loadData() {
     loadAsTable(); // arrayTable
+    println(1);
     getMinMax(); // minX, maxX, etc.
+    println(2);
     loadAsArray(); // data1D, data2D, etc.
+    println(3);
     //printData();
   }
 
   // Loads file into `arrayTable` 
   void loadAsTable() {
     // don't use "header" argument: we have to load headers manually, because "header" assumes that we know what headers are
-    Table table = loadTable(filePath); 
+    Table table = loadTable(filePath);
 
     table.trim(); // removes whitespace
 
@@ -23,22 +27,37 @@ class DataParser {
     table.removeRow(0);
 
     // fill arrayTable
-    arrayTable = new double[table.getRowCount()][dimension];
+    arrayTable = new Double[table.getRowCount()][dimension];
+    nullValuesCount = new int[7];
+    
     for (int row = 0; row < table.getRowCount (); row++)
       for (int col = 0; col < dimension; col++) {
+        
         // there's no table.getDouble, so we do table.getString and parse it as Double
-        arrayTable[row][col] = Double.parseDouble(table.getString(row, col));
+        String stringDataValue = table.getString(row, col);
+        
+        if (stringDataValue.length() == 0) { // for data like 1.0, 2.0, , 4.0
+          arrayTable[row][col] = null;
+          
+         nullValuesCount[col]++; 
+        }
+        else
+          arrayTable[row][col] = Double.parseDouble(stringDataValue);
       }
   }
 
   // finds min and max
   void getMinMax() {
-    double min, max;
+
     // "col" is the column and hence the dimension
     for (int col = 0; col < dimension; col++) {
-      min = arrayTable[0][col];
-      max = min;
+      double min = arrayTable[0][col];
+      double max = min;
       for (int row = 1; row < arrayTable.length; row++) {
+        
+        if (arrayTable[row][col] == null)
+          continue;
+          
         if (arrayTable[row][col] < min)
           min =  arrayTable[row][col];
         else if (arrayTable[row][col] > max)
@@ -108,19 +127,22 @@ class DataParser {
   }
 
   void calcIncrements() {
-    int[] dimensionsToUse = {
-      0, 1, 3
-    }; // X, Y, W
+    int[] dimensionsToUse = {0, 1, 3}; // X, Y, W
     for (int dim : dimensionsToUse) {
       // skip Y or W if dimension isn't big enough 
       if ((dim >= 1 && dimension < 3) || (dim >= 3 && dimension < 4))
         continue;
+        
       // all values from an axis (say, X)
-      double[] values = new double[arrayTable.length];
+      double[] values = new double[arrayTable.length - nullValuesCount[dim]];
 
-      // fill `values` with relevant column 
-      for (int row = 0; row < arrayTable.length; row++)
-        values[row] = arrayTable[row][dim];
+      // fill `values` with relevant column from arrayTable
+      int currentValuesIndex = 0; // necessary because null values
+      for (int row = 0; row < arrayTable.length; row++)  
+        if (arrayTable[row][dim] != null) {
+          values[currentValuesIndex] = arrayTable[row][dim];
+          currentValuesIndex++;
+        }
 
       // sort  
       Arrays.sort(values);
@@ -128,7 +150,7 @@ class DataParser {
 
       // add up the increments of the points  
       double sum = 0.0;
-      int uniqueValuesCount = 1; // we need to remove duplicates 
+      int uniqueValuesCount = 1; // we need to remove duplicates. minimum is 1 because first value is by definition unique.
 
       for (int i = 1; i < values.length; i++) {
         // skip duplicates
@@ -138,7 +160,7 @@ class DataParser {
         }
       }
 
-      double increment = sum / uniqueValuesCount;
+      double increment = sum / (uniqueValuesCount - 1);
       // given an increment and a min and max, we can say that there are 1 + (max - min) / increment 
       // elements in the resulting array. 
       int arrayLen = (int) (1 + (values[values.length - 1] - values[0]) / increment);
@@ -146,6 +168,7 @@ class DataParser {
         increment = 0;
         arrayLen = 1;
       }
+      println(increment);
 
       // set `increment` and `len` to relevant instance variables
       switch(dim) {
@@ -184,7 +207,7 @@ class DataParser {
   }
 
   double weightedAverage(double currentAverage, double numItems, double newItem) {
-    return (newItem + currentAverage * numItems)  / (currentAverage + 1);
+    return (currentAverage * numItems + newItem)  / (numItems + 1);
   }   
 
   /* END OF HELPER FUNCTIONS */
@@ -193,7 +216,7 @@ class DataParser {
     // use average of points
 
     double sum = 0.0;
-    for (double[] point : arrayTable) {
+    for (Double[] point : arrayTable) {
       sum += point[0];
     }
 
@@ -208,7 +231,7 @@ class DataParser {
     // instead of Y for a given X.
     double[] averageTally = new double[lenX];
 
-    for (double[] point : arrayTable) {
+    for (Double[] point : arrayTable) {
       double roundedX = roundValue(point[0], minX, incrementX);
       int indexX = calcArrayIndex(roundedX, minX, incrementX);
 
@@ -243,7 +266,7 @@ class DataParser {
     // instead of Z for a given (X, Y).
     double[][] averageTally = new double[lenX][lenY]; // lowercase-"d" double
 
-    for (double[] point : arrayTable) {
+    for (Double[] point : arrayTable) {
       double roundedX = roundValue(point[0], minX, incrementX);
       int indexX = calcArrayIndex(roundedX, minX, incrementX);
 
@@ -297,7 +320,7 @@ class DataParser {
     // instead of (Z, U, V, T) for a given (W, X, Y).
     double[][][] averageTally = new double[lenW][lenX][lenY]; // lowercase-"d" double
 
-    for (double[] point : arrayTable) {
+    for (Double[] point : arrayTable) {
       // double[] point is of form [x, y, z, w, u, v, t]
 
       double roundedW = roundValue(point[3], minW, incrementW);
@@ -350,17 +373,43 @@ class DataParser {
 
           if (data[_w][x][y][0] == null && data[_w][x - 1][y][0] != null && data[_w][x + 1][y][0] != null && data[_w][x][y - 1][0] != null && data[_w][x][y + 1][0] != null)
             for (int i = 0; i < data[0][0][0].length; i++)
-                data[_w][x][y][i] = (data[_w][x - 1][y][i] + data[_w][x + 1][y][i] + data[_w][x][y - 1][i] + data[_w][x][y + 1][i]) / 4;
+              data[_w][x][y][i] = (data[_w][x - 1][y][i] + data[_w][x + 1][y][i] + data[_w][x][y - 1][i] + data[_w][x][y + 1][i]) / 4;
   }
 
 
   void printData() {
     println();
+
+    if (dimension >= 2)
+      println("incrementX " + incrementX);
+    if (dimension >= 3)
+      println("incrementY " + incrementY);
+    if (dimension >= 4)
+      println("incrementW " + incrementW);
+
+
     for (String label : varLabels) {
       print(label + "\t");
     }
+    println();
 
-    if (dimension >= 5) {
+    if (dimension == 1)
+      println(data1D);
+
+    else if (dimension == 2) {
+      for (int x = 0; x < data2D.length; x++) {
+        println(valAtIndex(x, minX, incrementX) + "\t" + 
+          data2D[x]);
+      }
+    } else if (dimension == 3) {
+      for (int x = 0; x < data3D.length; x++) {
+        for (int y = 0; y < data3D[x].length; y++) {
+          println(valAtIndex(x, minX, incrementX) + "\t" + 
+            valAtIndex(y, minY, incrementY) + "\t" +
+            data3D[x][y][0]);
+        }
+      }
+    } else if (dimension >= 4) {
       Double[][][][] matrix;
       switch(dimension) {
       case 4: 
@@ -384,15 +433,15 @@ class DataParser {
         for (int x = 0; x < matrix[w].length; x++) {
           for (int y = 0; y < matrix[w][x].length; y++) {
 
-            print(valAtIndex(x, minX, incrementX) + " " + 
-              valAtIndex(y, minY, incrementY) + " " +
-              valAtIndex(w, minW, incrementW) + " " +
+            print(valAtIndex(x, minX, incrementX) + "\t" + 
+              valAtIndex(y, minY, incrementY) + "\t" +
+              valAtIndex(w, minW, incrementW) + "\t" +
               matrix[w][x][y][0] + " ");
 
             if (dimension >= 6)
-              print(matrix[w][x][y][1] + " ");
+              print(matrix[w][x][y][1] + "\t");
             if (dimension >= 7)
-              print(matrix[w][x][y][2] + " ");
+              print(matrix[w][x][y][2] + "\t");
             print("\n");
           }
         }

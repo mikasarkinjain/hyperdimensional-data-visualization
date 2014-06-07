@@ -14,7 +14,7 @@ double w = 0;
 /* DATA STRUCTURES */
 int dimension;
 String[] varLabels;
-double[][] arrayTable;
+Double[][] arrayTable;
 
 final int BEST_FIT_MESH = 0;
 final int BEST_FIT_SURFACE = 1;
@@ -52,6 +52,9 @@ double minV;
 double maxT;
 double minT;
 
+// nullValuesCount[0] contains number of X values that are null, etc.
+// used by dataParser.calcIncrements()
+int[] nullValuesCount;
 
 /* CAMERA VARS */ 
 double cameraX = 0;
