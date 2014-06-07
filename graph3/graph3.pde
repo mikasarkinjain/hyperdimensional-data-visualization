@@ -284,33 +284,35 @@ void graphPoints(){
     if (arrayTable[i].length == 1) {
       fill(255, 0, 0);
       noStroke();
-      plotPoint(0, 0, arrayTable[i][0]);                
+      plotPoint(0, 0, arrayTable[i][1]);                
     }
     
     if (arrayTable[i].length == 2) {
       fill(255, 0, 0);
       noStroke();
-      plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
+      plotPoint(arrayTable[i][1], arrayTable[i][2], 0);
     }
     
     if (arrayTable[i].length == 3) {
       fill(255, 0, 0);
-      noStroke();v
-      plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      noStroke();
+      plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
     }
     
     if (arrayTable[i].length == 4) {
       fill(255, 0, 0);
       noStroke();
-      plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0] == w){ 
+        plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
+      }
     }
     
     if (arrayTable[i].length == 5) {
       double R = (arrayTable[4] - minU)*255/(maxU-minU);
       fill(R, 0, 0);
       noStroke();
-      if (arrayTable[i][3] == w){ 
-        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0] == w){ 
+        plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
       }
     }
     
@@ -319,8 +321,8 @@ void graphPoints(){
       double G = (arrayTable[5] - minV)*255/(maxV-minV);
       fill(R, G, 0);
       noStroke();
-      if (arrayTable[i][3] == w){ 
-        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0] == w){ 
+        plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
       }
     }
     
@@ -330,8 +332,8 @@ void graphPoints(){
       double B = (arrayTable[6] - minT)*255/(maxT-minT);
       fill(R, G, B);
       noStroke();
-      if (arrayTable[i][3] == w){ 
-        plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+      if (arrayTable[i][0] == w){ 
+        plotPoint(arrayTable[i][1], arrayTable[i][3], arrayTable[i][2]);
       }
     }
   }
