@@ -1,11 +1,18 @@
 class GUI {
   final float ROTATE_RATE = 0.01;
   final float PAN_RATE = 4;
-  final float CYCLE_RATE = 1; // changing W
+  float CYCLE_RATE = 1; // for changing W. is not final because depends on data set.
   final float ZOOM_RATE = 1.02;
   
   boolean hoveringOverLoad = false;
   boolean holdingWKey = false;
+  
+  // called by dataParser#loadData
+  void initCycling() {
+    w = wValues[wValues.length / 2]; // set W to middle of Ws
+    roundedWIndex = wValues.length / 2;
+    CYCLE_RATE = (float) (4 * (maxW - minW) / height);
+  }
 
   void drawUI() {
     hoveringOverLoad = false;
@@ -81,8 +88,21 @@ class GUI {
   }
   
   void mouseMoved() {
-    if (holdingWKey) {
-      w += (pmouseY - mouseY) * CYCLE_RATE;  
+    if (holdingWKey && dimension >= 4) {
+      w += (pmouseY - mouseY) * CYCLE_RATE;
+      
+      // constrain w to within [minW - abs(minW), maxW)
+      // the decreased lower bound allows some buffer space. if the lower bound were just minW,
+      // roundedWIndex would never equal 0.
+      w = constrain((float) w, (float) (minW - Math.abs(minW)), (float) maxW);
+      
+      // set roundedWIndex
+      while (roundedWIndex < wValues.length - 1 && w > wValues[roundedWIndex]) {
+        roundedWIndex++;
+      }
+        
+      while (roundedWIndex >= 1 && w < wValues[roundedWIndex - 1])
+        roundedWIndex--;
     }
   }
   

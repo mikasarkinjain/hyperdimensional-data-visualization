@@ -4,6 +4,7 @@ class DataParser {
     loadAsTable(); // arrayTable
     getMinMax(); // minX, maxX, etc.
     loadAsArray(); // data1D, data2D, etc.
+    gui.initCycling();
     //printDataHuman();
   }
 
@@ -144,7 +145,10 @@ class DataParser {
 
       // sort  
       Arrays.sort(values);
-
+      
+      // wValues is an instance variable of main used by Graph#graphPoints()
+      if (dim == 3)
+        wValues = values;
 
       // add up the increments of the points  
       double sum = 0.0;
@@ -206,7 +210,6 @@ class DataParser {
   double weightedAverage(double currentAverage, double numItems, double newItem) {
     return (currentAverage * numItems + newItem)  / (numItems + 1);
   }   
-
   /* END OF HELPER FUNCTIONS */
 
   void load1D() {

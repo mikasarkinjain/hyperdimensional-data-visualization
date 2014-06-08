@@ -8,8 +8,8 @@ GUI gui;
 
 
 /* GRAPH VARS */
-double w = 0;
-
+double w;
+int roundedWIndex;
 
 /* DATA STRUCTURES */
 int dimension;
@@ -52,11 +52,15 @@ double minV;
 double maxT;
 double minT;
 
+// used by GUI to round W
+double[] wValues;
+
+
 // nullValuesCount[0] contains number of X values that are null, etc.
 // used by dataParser.calcIncrements()
 int[] nullValuesCount;
 
-/* CAMERA VARS */ 
+/* CAMERA VARS */
 double cameraX = 0;
 double cameraY = 0;
 double cameraZ = 0;
@@ -99,11 +103,11 @@ void mouseDragged() {
 }
 
 void keyPressed() {
-  gui.keyPressed(); 
+  gui.keyPressed();
 }
 
 void keyRealeased() {
-  gui.keyReleased(); 
+  gui.keyReleased();
 }
 
 void mouseMoved() {
@@ -111,9 +115,10 @@ void mouseMoved() {
 }
 
 void mouseWheel(MouseEvent event) {
-  gui.mouseWheel(event);  
+  gui.mouseWheel(event);
 }
 
 void fileSelected(File selection) {
- gui.fileSelected(selection);
+  gui.fileSelected(selection);
 }
+

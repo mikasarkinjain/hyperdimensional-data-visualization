@@ -1,6 +1,4 @@
 class Graph {
-  double w = 2;
-
 
   double maxY2D = 20;
   double minY2D = 1;
@@ -74,7 +72,7 @@ class Graph {
   }
 
   void plotPoint(double x, double y, double z) {
-    println(x + " " + y + " " + z);
+    println("plot " + x + " " + y + " " + z);
     translate((float)-x, (float)-z, (float)-y);
     sphere(2);
     translate((float)x, (float)z, (float)y);
@@ -218,6 +216,10 @@ class Graph {
 
     if (dimension >= 3 && maxZ > minZ)
       dilationDivisorZ = (maxZ - minZ) * maxDimensionLength;
+      
+    double roundedW = wValues[roundedWIndex];
+    
+    println("roundedW = " + roundedW);
 
     for (int i = 0; i < arrayTable.length; i++) {
       try {
@@ -244,17 +246,15 @@ class Graph {
 
           double x = (arrayTable[i][0] - minX) / dilationDivisorX;
           double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
-          
-          println("dilationDivisorY = " + dilationDivisorY);
-          println("y = " + y);
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;;
 
           plotPoint(x, z, y);
         }
-
-        if (arrayTable[i].length == 4 && arrayTable[i][3] == w) {
+        if (arrayTable[i].length == 4 && arrayTable[i][3] == roundedW) {
           fill(255, 0, 0);
           noStroke();
+          
+ 
 
           double x = (arrayTable[i][0] - minX) / dilationDivisorX;
           double y = (arrayTable[i][1] - minY) / dilationDivisorY;
@@ -263,7 +263,7 @@ class Graph {
           plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 5 && arrayTable[i][3] == w) {
+        if (arrayTable[i].length == 5 && arrayTable[i][3] == roundedW) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           fill(R, 0, 0);
           noStroke();
@@ -275,7 +275,7 @@ class Graph {
           plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 6 && arrayTable[i][3] == w) {
+        if (arrayTable[i].length == 6 && arrayTable[i][3] == roundedW) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           fill(R, G, 0);
@@ -288,7 +288,7 @@ class Graph {
           plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 7 && arrayTable[i][3] == w) {
+         if (arrayTable[i].length == 7 && arrayTable[i][3] == roundedW) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
