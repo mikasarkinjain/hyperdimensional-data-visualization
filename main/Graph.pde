@@ -30,8 +30,8 @@ class Graph {
       if (dimension == 6) graph4Dfor4Dto7D(data6D);
       if (dimension == 7) graph4Dfor4Dto7D(data7D);
     }
-    else if (viewType == 2){
-      //graphPoints();
+    else if (viewType == 2 && arrayTable != null){
+      graphPoints();
     }
     translate(0,0,0);
   }
@@ -48,16 +48,23 @@ class Graph {
     try{
       textAlign(LEFT);
       text(varLabels[0]+" "+maxX, (float)axisLength/2, 0, 0);
+      
       textAlign(RIGHT);
-      text(varLabels[1]+" "+maxY, 0, 0, (float)axisLength/2);
-      text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);
+      if (dimension >= 2) 
+        text(varLabels[1]+" "+maxY, 0, 0, (float)axisLength/2);
+      if (dimension >= 3)
+        text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);
     
       textAlign(LEFT);        
       text(varLabels[0]+" "+minX, (float)axisLength/32, 0, 0);
+      
       textAlign(RIGHT);
-      text(varLabels[1]+" "+minY, 0, 0, (float)axisLength/32);
-      text(varLabels[2]+" "+minZ, 0, (float)-axisLength/32, 0);
-    }catch(NullPointerException e) {
+      if (dimension >= 2)
+        text(varLabels[1]+" "+minY, 0, 0, (float)axisLength/32);
+      if (dimension >= 3)
+        text(varLabels[2]+" "+minZ, 0, (float)-axisLength/32, 0);
+        
+    } catch(NullPointerException e) {
       textAlign(LEFT);        
       text("X", (float)axisLength/2, 0, 0);
       textAlign(RIGHT);
@@ -200,66 +207,99 @@ class Graph {
 
 
   void graphPoints() {
+    double dilationDivisorX = (maxX - minX) * maxDimensionLength;
+    // if minX = maxX, dilationDivisorX = 0, and the calculated x will equal NaN
+    if (maxX <= minX)
+      dilationDivisorX = 1;
+    
+    double dilationDivisorY = 1; double dilationDivisorZ = 1;
+    if (dimension >= 2 && maxY > minY)
+      dilationDivisorY = (maxY - minY) * maxDimensionLength;
+
+    if (dimension >= 3 && maxZ > minZ)
+      dilationDivisorZ = (maxZ - minZ) * maxDimensionLength;
+
     for (int i = 0; i < arrayTable.length; i++) {
       try {
         if (arrayTable[i].length == 1) {
           fill(255, 0, 0);
           noStroke();
-          plotPoint(0, 0, arrayTable[i][0]);
+          
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          plotPoint(0, 0, x);
         }
-        //(x - min ) / (max-min) * axis
 
         if (arrayTable[i].length == 2) {
           fill(255, 0, 0);
           noStroke();
-          plotPoint(arrayTable[i][0], arrayTable[i][1], 0);
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          plotPoint(x, y, 0);
         }
 
         if (arrayTable[i].length == 3) {
           fill(255, 0, 0);
           noStroke();
-          double dilationX = maxDimensionLength / maxX;
-          double dilationY = farCuttingPlaneZ / maxY;
-          double dilationZ = maxDimensionLength / maxZ;
-          //println(farCuttingPlaneZ);
-          //plotPoint(arrayTable[i][0] * dilationX, arrayTable[i][2] * dilationY, arrayTable[i][1]);
-          plotPoint(arrayTable[i][0] * dilationX, arrayTable[i][2] * dilationZ, arrayTable[i][1] * dilationY);
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+          
+          println("dilationDivisorY = " + dilationDivisorY);
+          println("y = " + y);
+
+          plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 4) {
+        if (arrayTable[i].length == 4 && arrayTable[i][3] == w) {
           fill(255, 0, 0);
           noStroke();
-          plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+
+          plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 5) {
+        if (arrayTable[i].length == 5 && arrayTable[i][3] == w) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           fill(R, 0, 0);
           noStroke();
-          if (arrayTable[i][3] == w) { 
-            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-          }
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+
+          plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 6) {
+        if (arrayTable[i].length == 6 && arrayTable[i][3] == w) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           fill(R, G, 0);
           noStroke();
-          if (arrayTable[i][3] == w) { 
-            plotPoint(arrayTable[i][0  ], arrayTable[i][2], arrayTable[i][1]);
-          }
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+
+          plotPoint(x, z, y);
         }
 
-        if (arrayTable[i].length == 7) {
+        if (arrayTable[i].length == 7 && arrayTable[i][3] == w) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
           fill(R, G, B);
           noStroke();
-          if (arrayTable[i][3] == w) { 
-            plotPoint(arrayTable[i][0], arrayTable[i][2], arrayTable[i][1]);
-          }
+
+          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+
+          plotPoint(x, z, y);
         }
       }
       catch (NullPointerException e) {
