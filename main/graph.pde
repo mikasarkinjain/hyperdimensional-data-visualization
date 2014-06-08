@@ -42,19 +42,28 @@ class Graph {
     line(0, 0, 0, 0, (float)axisLength/2, 0);
     line(0, 0, 0, 0, 0, (float)axisLength/2);
     
-     fill(255);
+    fill(255);
     textSize(10);
     scale(1, -1);
-    text(varLabels[0], (float)axisLength/2, 0, 0);
-    text(varLabels[1], 0, 0, (float)axisLength/2);
-    text(varLabels[2], 0, (float)-axisLength/2, 0);
-   }
-
-  void plotPoint(double x, double y, double z) {
-    //println(x + " " + y + " " + z);
-    translate((float)-x, (float)-z, (float)-y);
-    sphere(2);
-    translate((float)x, (float)z, (float)y);
+    try{
+      textAlign(LEFT);
+      text(varLabels[0]+" "+maxX, (float)axisLength/2, 0, 0);
+      textAlign(RIGHT);
+      text(varLabels[1]+" "+maxY, 0, 0, (float)axisLength/2);
+      text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);text(varLabels[0], (float)axisLength/2, 0, 0);
+    
+      textAlign(LEFT);        
+      text(varLabels[0]+" "+minX, (float)axisLength/32, 0, 0);
+      textAlign(RIGHT);
+      text(varLabels[1]+" "+minY, 0, 0, (float)axisLength/32);
+      text(varLabels[2]+" "+minZ, 0, (float)-axisLength/32, 0);
+    }catch(NullPointerException e) {
+      textAlign(LEFT);        
+      text("X", (float)axisLength/2, 0, 0);
+      textAlign(RIGHT);
+      text("Y", 0, 0, (float)axisLength/2);
+      text("Z", 0, (float)-axisLength/2, 0);
+    }
   }
 
 
