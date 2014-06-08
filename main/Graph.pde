@@ -17,6 +17,24 @@ class Graph {
 
   float rotx = PI;
   float roty = 0;
+  
+ void graph(){
+    translate((float)-axisLength/4, (float)-axisLength/4, (float)-axisLength/4);
+    drawAxis();
+    if (viewType == BEST_FIT_MESH || viewType == BEST_FIT_SURFACE){
+      if (dimension == 1) graph1D();
+      if (dimension == 2) graph2D();
+      if (dimension == 3) graph3Dfor3Dto7D(data3D);
+      if (dimension == 4) graph4Dfor4Dto7D(data4D);
+      if (dimension == 5) graph4Dfor4Dto7D(data5D);
+      if (dimension == 6) graph4Dfor4Dto7D(data6D);
+      if (dimension == 7) graph4Dfor4Dto7D(data7D);
+    }
+    else if (viewType == 2){
+      //graphPoints();
+    }
+    translate(0,0,0);
+  }
 
   void drawAxis() {
     stroke(255);
@@ -57,26 +75,7 @@ class Graph {
     vertex((float)x4, (float)y4, (float)z4);
     endShape(CLOSE);
   }
-
-
-
-
-
-  void graph() {
-    drawAxis();
-    if (viewType == BEST_FIT_MESH || viewType == BEST_FIT_SURFACE) {
-      if (dimension == 1) graph1D();
-      if (dimension == 2) graph2D();
-      if (dimension == 3) graph3Dfor3Dto7D(data3D);
-      if (dimension == 4) graph4Dfor4Dto7D(data4D);
-      if (dimension == 5) graph4Dfor4Dto7D(data5D);
-      if (dimension == 6) graph4Dfor4Dto7D(data6D);
-      if (dimension == 7) graph4Dfor4Dto7D(data7D);
-    } else if (viewType == DATA_POINTS && arrayTable != null)
-      graphPoints();
-  }
-
-
+  
   void graph1D() {
     noStroke(); 
     fill(255); //white for now, should be changed
