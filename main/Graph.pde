@@ -205,17 +205,20 @@ class Graph {
 
 
   void graphPoints() {
-    double dilationDivisorX = (maxX - minX) * maxDimensionLength;
-    // if minX = maxX, dilationDivisorX = 0, and the calculated x will equal NaN
-    if (maxX <= minX)
-      dilationDivisorX = 1;
     
-    double dilationDivisorY = 1; double dilationDivisorZ = 1;
+    // Formula for dilation is (value - min) / (max-min) * maxDimensionLength
+    // We precompute part of this here
+    double dilationFactorX = 1 / (maxX - minX) * maxDimensionLength;
+    // if minX = maxX, dilationFactorX = 0, and the calculated x will equal NaN
+    if (maxX <= minX)
+      dilationFactorX = 1;
+    
+    double dilationFactorY = 1; double dilationFactorZ = 1;
     if (dimension >= 2 && maxY > minY)
-      dilationDivisorY = (maxY - minY) * maxDimensionLength;
+      dilationFactorY = 1 / (maxY - minY) * maxDimensionLength;
 
     if (dimension >= 3 && maxZ > minZ)
-      dilationDivisorZ = (maxZ - minZ) * maxDimensionLength;
+      dilationFactorZ = 1 / (maxZ - minZ) * maxDimensionLength;
       
     double roundedW = wValues[roundedWIndex];
     
@@ -227,7 +230,7 @@ class Graph {
           fill(255, 0, 0);
           noStroke();
           
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
           plotPoint(0, 0, x);
         }
 
@@ -235,8 +238,8 @@ class Graph {
           fill(255, 0, 0);
           noStroke();
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
           plotPoint(x, y, 0);
         }
 
@@ -244,21 +247,22 @@ class Graph {
           fill(255, 0, 0);
           noStroke();
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
+          double z = (arrayTable[i][2] - minZ) * dilationFactorZ;;
 
           plotPoint(x, z, y);
         }
         if (arrayTable[i].length == 4 && arrayTable[i][3] == roundedW) {
           fill(255, 0, 0);
           noStroke();
-          
- 
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
+          double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
+          
+          println("z = " + arrayTable[i][2] + ", dilatedZ = " + z);
+          println("dilationFactorZ = " + dilationFactorZ);
 
           plotPoint(x, z, y);
         }
@@ -268,9 +272,9 @@ class Graph {
           fill(R, 0, 0);
           noStroke();
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
+          double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
           plotPoint(x, z, y);
         }
@@ -281,9 +285,9 @@ class Graph {
           fill(R, G, 0);
           noStroke();
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
+          double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
           plotPoint(x, z, y);
         }
@@ -295,9 +299,9 @@ class Graph {
           fill(R, G, B);
           noStroke();
 
-          double x = (arrayTable[i][0] - minX) / dilationDivisorX;
-          double y = (arrayTable[i][1] - minY) / dilationDivisorY;
-          double z = (arrayTable[i][2] - minZ) / dilationDivisorZ;
+          double x = (arrayTable[i][0] - minX) * dilationFactorX;
+          double y = (arrayTable[i][1] - minY) * dilationFactorY;
+          double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
           plotPoint(x, z, y);
         }
