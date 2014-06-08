@@ -50,7 +50,7 @@ class Graph {
       text(varLabels[0]+" "+maxX, (float)axisLength/2, 0, 0);
       textAlign(RIGHT);
       text(varLabels[1]+" "+maxY, 0, 0, (float)axisLength/2);
-      text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);text(varLabels[0], (float)axisLength/2, 0, 0);
+      text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);
     
       textAlign(LEFT);        
       text(varLabels[0]+" "+minX, (float)axisLength/32, 0, 0);
