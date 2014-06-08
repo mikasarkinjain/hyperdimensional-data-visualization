@@ -255,6 +255,8 @@ class DataParser {
 
 
   void load3D() {
+    //println(lenX + " x " + lenY);
+    //println(arrayTable.length
     data3D = new Double[lenX][lenY][1];
 
     // When two points have the same (X, Y), we average their Zs. (this data structure is best-fit)
@@ -372,16 +374,82 @@ class DataParser {
               data[_w][x][y][i] = (data[_w][x - 1][y][i] + data[_w][x + 1][y][i] + data[_w][x][y - 1][i] + data[_w][x][y + 1][i]) / 4;
   }
 
-  void printData() {
-    printData(true);
+void printDataHuman() {
+    println();
+
+    if (dimension >= 2)
+      println("incrementX " + incrementX);
+    if (dimension >= 3)
+      println("incrementY " + incrementY);
+    if (dimension >= 4)
+      println("incrementW " + incrementW);
+
+
+    for (String label : varLabels) {
+      print(label + "\t");
+    }
+    println();
+
+    if (dimension == 1)
+      println(data1D);
+
+    else if (dimension == 2) {
+      for (int x = 0; x < data2D.length; x++) {
+        println(valAtIndex(x, minX, incrementX) + "\t" + 
+          data2D[x]);
+      }
+    } else if (dimension == 3) {
+      for (int x = 0; x < data3D.length; x++) {
+        for (int y = 0; y < data3D[x].length; y++) {
+          println(valAtIndex(x, minX, incrementX) + "\t" + 
+            valAtIndex(y, minY, incrementY) + "\t" +
+            data3D[x][y][0]);
+        }
+      }
+    } else if (dimension >= 4) {
+      Double[][][][] matrix;
+      switch(dimension) {
+      case 4: 
+        matrix = data4D; 
+        break;
+      case 5: 
+        matrix = data5D; 
+        break;
+      case 6: 
+        matrix = data6D; 
+        break;
+      case 7: 
+        matrix = data7D; 
+        break;
+      default: 
+        matrix = data5D; 
+        break;
+      }
+
+      for (int w = 0; w < matrix.length; w++) {
+        for (int x = 0; x < matrix[w].length; x++) {
+          for (int y = 0; y < matrix[w][x].length; y++) {
+
+            print(valAtIndex(x, minX, incrementX) + "\t" + 
+              valAtIndex(y, minY, incrementY) + "\t" +
+              valAtIndex(w, minW, incrementW) + "\t" +
+              matrix[w][x][y][0] + " ");
+
+            if (dimension >= 6)
+              print(matrix[w][x][y][1] + "\t");
+            if (dimension >= 7)
+              print(matrix[w][x][y][2] + "\t");
+            print("\n");
+          }
+        }
+      }
+    }
   }
 
-  void printData(boolean javaParseable) {
+  void printData() {
     println();
     
-    String formatter = "\t";
-    if (javaParseable)
-      formatter = "";
+    String formatter = "";
     
     if (dimension >= 2)
       println("incrementX " + incrementX);
@@ -402,8 +470,9 @@ class DataParser {
     else if (dimension == 2) {
       print("[");
       for (int x = 0; x < data2D.length; x++) {
-        print(valAtIndex(x, minX, incrementX) + ", " + formatter + 
-          data2D[x]);
+        print(data2D[x]);
+        if (x < data2D.length - 1)
+          print(",");
       }
       println("]");
     } else if (dimension == 3) {
@@ -460,4 +529,3 @@ class DataParser {
     }
   }
 }
-
