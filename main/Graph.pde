@@ -36,18 +36,19 @@ class Graph {
     translate(0,0,0);
   }
 
-  void drawAxis() {
+  void drawAxis(){
     stroke(255);
-    line((float)-axisLength/2, 0, 0, (float)axisLength/2, 0, 0);
-    line(0, (float)-axisLength/2, 0, 0, (float)axisLength/2, 0);
-    line(0, 0, (float)-axisLength/2, 0, 0, (float)axisLength/2);
-
-    //fill(255);
-    //textSize(10);
-    //text("x", (float)axisLength/2, 0, 0);
-    //text("y", 0, 0, (float)-axisLength/2);
-    //text("z", 0, (float)-axisLength/2, 0);
-  }
+    line(0, 0, 0, (float)axisLength/2, 0, 0);
+    line(0, 0, 0, 0, (float)axisLength/2, 0);
+    line(0, 0, 0, 0, 0, (float)axisLength/2);
+    
+     fill(255);
+    textSize(10);
+    scale(1, -1);
+    text(varLabels[0], (float)axisLength/2, 0, 0);
+    text(varLabels[1], 0, 0, (float)axisLength/2);
+    text(varLabels[2], 0, (float)-axisLength/2, 0);
+   }
 
   void plotPoint(double x, double y, double z) {
     //println(x + " " + y + " " + z);
