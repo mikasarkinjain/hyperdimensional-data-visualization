@@ -4,7 +4,7 @@ class DataParser {
     loadAsTable(); // arrayTable
     getMinMax(); // minX, maxX, etc.
     loadAsArray(); // data1D, data2D, etc.
-    //printData();
+    printData();
   }
 
   // Loads file into `arrayTable` 
@@ -372,10 +372,17 @@ class DataParser {
               data[_w][x][y][i] = (data[_w][x - 1][y][i] + data[_w][x + 1][y][i] + data[_w][x][y - 1][i] + data[_w][x][y + 1][i]) / 4;
   }
 
-
   void printData() {
-    println();
+    printData(true);
+  }
 
+  void printData(boolean javaParseable) {
+    println();
+    
+    String formatter = "\t";
+    if (javaParseable)
+      formatter = "";
+    
     if (dimension >= 2)
       println("incrementX " + incrementX);
     if (dimension >= 3)
@@ -385,7 +392,7 @@ class DataParser {
 
 
     for (String label : varLabels) {
-      print(label + "\t");
+      print(label + formatter);
     }
     println();
 
@@ -393,18 +400,26 @@ class DataParser {
       println(data1D);
 
     else if (dimension == 2) {
+      print("[");
       for (int x = 0; x < data2D.length; x++) {
-        println(valAtIndex(x, minX, incrementX) + "\t" + 
+        print(valAtIndex(x, minX, incrementX) + ", " + formatter + 
           data2D[x]);
       }
+      println("]");
     } else if (dimension == 3) {
+      print("[");
       for (int x = 0; x < data3D.length; x++) {
+        print("[");
         for (int y = 0; y < data3D[x].length; y++) {
-          println(valAtIndex(x, minX, incrementX) + "\t" + 
-            valAtIndex(y, minY, incrementY) + "\t" +
+          print(valAtIndex(x, minX, incrementX) + ", " + formatter + 
+            valAtIndex(y, minY, incrementY) + ", " + formatter +
             data3D[x][y][0]);
         }
+        print("]");
+        if (x < data3D.length - 1)
+          print(",");
       }
+      println("]");
     } else if (dimension >= 4) {
       Double[][][][] matrix;
       switch(dimension) {
