@@ -18,8 +18,8 @@ Double[][] arrayTable;
 
 final int BEST_FIT_MESH = 0;
 final int BEST_FIT_SURFACE = 1;
-final int POINTS = 2;
-int viewType = BEST_FIT_SURFACE;
+final int DATA_POINTS = 2;
+int viewType = 1;
 
 Double data1D;
 Double[] data2D;
@@ -60,6 +60,8 @@ int[] nullValuesCount;
 double cameraX = 0;
 double cameraY = 0;
 double cameraZ = 0;
+float nearCuttingPlaneZ;
+float farCuttingPlaneZ;
 
 float rotX = 0;
 float rotY = 0;

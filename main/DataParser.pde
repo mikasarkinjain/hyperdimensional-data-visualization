@@ -4,7 +4,7 @@ class DataParser {
     loadAsTable(); // arrayTable
     getMinMax(); // minX, maxX, etc.
     loadAsArray(); // data1D, data2D, etc.
-    printData();
+    //printDataHuman();
   }
 
   // Loads file into `arrayTable` 
@@ -255,8 +255,6 @@ class DataParser {
 
 
   void load3D() {
-    //println(lenX + " x " + lenY);
-    //println(arrayTable.length
     data3D = new Double[lenX][lenY][1];
 
     // When two points have the same (X, Y), we average their Zs. (this data structure is best-fit)
@@ -273,13 +271,15 @@ class DataParser {
 
       averageTally[indexX][indexY]++;
 
+      
       // If there already is a Z for this (X, Y)...
       // ... We compute  the weighted average of the points, using `averageTally`.
       // If there is no value yet for this (X, Y), we don't need to do averaging.
       if (averageTally[indexX][indexY] >= 2)
         data3D[indexX][indexY][0] = weightedAverage(data3D[indexX][indexY][0], averageTally[indexX][indexY], point[2]);
-      else
+      else {
         data3D[indexX][indexY][0] = point[2];
+      }
     }
   }
 

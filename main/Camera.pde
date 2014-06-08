@@ -14,7 +14,9 @@ class Camera {
       
     float cameraY = height/2.0;
     float cameraZ = cameraY / tan(FOV / 2.0);
-    perspective(FOV, width/height, cameraZ / 10.0, cameraZ * 10.0);
+    nearCuttingPlaneZ = cameraZ / 10.0;
+    farCuttingPlaneZ = cameraZ * 10.0;
+    perspective(FOV, width/height, nearCuttingPlaneZ, farCuttingPlaneZ);
   }
 
   void rotate(double x, double y) {
