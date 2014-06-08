@@ -221,8 +221,6 @@ class Graph {
       dilationFactorZ = 1 / (maxZ - minZ) * maxDimensionLength;
       
     double roundedW = wValues[roundedWIndex];
-    
-    println("roundedW = " + roundedW);
 
     for (int i = 0; i < arrayTable.length; i++) {
       try {
@@ -260,11 +258,8 @@ class Graph {
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
-          
-          println("z = " + arrayTable[i][2] + ", dilatedZ = " + z);
-          println("dilationFactorZ = " + dilationFactorZ);
 
-          plotPoint(x, z, y);
+          plotPoint(x, -z, y);
         }
 
         if (arrayTable[i].length == 5 && arrayTable[i][3] == roundedW) {
@@ -289,7 +284,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, z, y);
+          plotPoint(x, -z, y);
         }
 
          if (arrayTable[i].length == 7 && arrayTable[i][3] == roundedW) {
@@ -303,7 +298,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, z, y);
+          plotPoint(x, -z, y);
         }
       }
       catch (NullPointerException e) {
