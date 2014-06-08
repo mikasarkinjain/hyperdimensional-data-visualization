@@ -47,8 +47,8 @@ Double[][] arrayTable;
 
 void setup() {
   DataParser dataParser = new DataParser(); 
-  filePath = filePathBase + "4D_1.csv";
+  filePath = filePathBase + "4D_2.csv";
   dataParser.loadData(); 
   println("done");
-  dataParser.printData();
+  dataParser.printDataHuman();
 }

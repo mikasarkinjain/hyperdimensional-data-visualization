@@ -19,7 +19,7 @@ Double[][] arrayTable;
 final int BEST_FIT_MESH = 0;
 final int BEST_FIT_SURFACE = 1;
 final int DATA_POINTS = 2;
-int viewType = 1;
+int viewType = 2;
 
 Double data1D;
 Double[] data2D;

@@ -26,19 +26,18 @@ class DataParser {
     // fill arrayTable
     arrayTable = new Double[table.getRowCount()][dimension];
     nullValuesCount = new int[7];
-    
+
     for (int row = 0; row < table.getRowCount (); row++)
       for (int col = 0; col < dimension; col++) {
-        
+
         // there's no table.getDouble, so we do table.getString and parse it as Double
         String stringDataValue = table.getString(row, col);
-        
+
         if (stringDataValue.length() == 0) { // for data like 1.0, 2.0, , 4.0
           arrayTable[row][col] = null;
-          
-         nullValuesCount[col]++; 
-        }
-        else
+
+          nullValuesCount[col]++;
+        } else
           arrayTable[row][col] = Double.parseDouble(stringDataValue);
       }
   }
@@ -51,10 +50,10 @@ class DataParser {
       double min = arrayTable[0][col];
       double max = min;
       for (int row = 1; row < arrayTable.length; row++) {
-        
+
         if (arrayTable[row][col] == null)
           continue;
-          
+
         if (arrayTable[row][col] < min)
           min =  arrayTable[row][col];
         else if (arrayTable[row][col] > max)
@@ -124,12 +123,14 @@ class DataParser {
   }
 
   void calcIncrements() {
-    int[] dimensionsToUse = {0, 1, 3}; // X, Y, W
+    int[] dimensionsToUse = {
+      0, 1, 3
+    }; // X, Y, W
     for (int dim : dimensionsToUse) {
       // skip Y or W if dimension isn't big enough 
       if ((dim >= 1 && dimension < 3) || (dim >= 3 && dimension < 4))
         continue;
-        
+
       // all values from an axis (say, X)
       double[] values = new double[arrayTable.length - nullValuesCount[dim]];
 
@@ -165,7 +166,7 @@ class DataParser {
         increment = 0;
         arrayLen = 1;
       }
-      
+
       // set `increment` and `len` to relevant instance variables
       switch(dim) {
       case 0: 
@@ -271,7 +272,7 @@ class DataParser {
 
       averageTally[indexX][indexY]++;
 
-      
+
       // If there already is a Z for this (X, Y)...
       // ... We compute  the weighted average of the points, using `averageTally`.
       // If there is no value yet for this (X, Y), we don't need to do averaging.
@@ -374,7 +375,7 @@ class DataParser {
               data[_w][x][y][i] = (data[_w][x - 1][y][i] + data[_w][x + 1][y][i] + data[_w][x][y - 1][i] + data[_w][x][y + 1][i]) / 4;
   }
 
-void printDataHuman() {
+  void printDataHuman() {
     println();
 
     if (dimension >= 2)
@@ -401,9 +402,10 @@ void printDataHuman() {
     } else if (dimension == 3) {
       for (int x = 0; x < data3D.length; x++) {
         for (int y = 0; y < data3D[x].length; y++) {
-          println(valAtIndex(x, minX, incrementX) + "\t" + 
-            valAtIndex(y, minY, incrementY) + "\t" +
-            data3D[x][y][0]);
+          if (data3D[x][y][0] != null)
+            println(valAtIndex(x, minX, incrementX) + "\t" + 
+              valAtIndex(y, minY, incrementY) + "\t" +
+              data3D[x][y][0]);
         }
       }
     } else if (dimension >= 4) {
@@ -425,21 +427,22 @@ void printDataHuman() {
         matrix = data5D; 
         break;
       }
-
+      
       for (int w = 0; w < matrix.length; w++) {
         for (int x = 0; x < matrix[w].length; x++) {
           for (int y = 0; y < matrix[w][x].length; y++) {
+            if (matrix[w][x][y][0] != null) {
+              print(valAtIndex(x, minX, incrementX) + "\t" + 
+                valAtIndex(y, minY, incrementY) + "\t" +
+                matrix[w][x][y][0] + "\t " +
+                valAtIndex(w, minW, incrementW) + "\t");
 
-            print(valAtIndex(x, minX, incrementX) + "\t" + 
-              valAtIndex(y, minY, incrementY) + "\t" +
-              valAtIndex(w, minW, incrementW) + "\t" +
-              matrix[w][x][y][0] + " ");
-
-            if (dimension >= 6)
-              print(matrix[w][x][y][1] + "\t");
-            if (dimension >= 7)
-              print(matrix[w][x][y][2] + "\t");
-            print("\n");
+              if (dimension >= 6)
+                print(matrix[w][x][y][1] + "\t");
+              if (dimension >= 7)
+                print(matrix[w][x][y][2] + "\t");
+              print("\n");
+            }
           }
         }
       }
@@ -448,9 +451,9 @@ void printDataHuman() {
 
   void printData() {
     println();
-    
+
     String formatter = "";
-    
+
     if (dimension >= 2)
       println("incrementX " + incrementX);
     if (dimension >= 3)
@@ -529,3 +532,4 @@ void printDataHuman() {
     }
   }
 }
+

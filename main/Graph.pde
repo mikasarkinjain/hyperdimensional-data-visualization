@@ -66,6 +66,13 @@ class Graph {
     }
   }
 
+  void plotPoint(double x, double y, double z) {
+    println(x + " " + y + " " + z);
+    translate((float)-x, (float)-z, (float)-y);
+    sphere(2);
+    translate((float)x, (float)z, (float)y);
+  }
+
 
   void plotLine(double x1, double y1, double z1, 
   double x2, double y2, double z2) {
