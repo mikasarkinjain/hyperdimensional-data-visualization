@@ -129,12 +129,15 @@ class Graph {
     for (int i = 0; i < data3DatW.length; i++) {
       for (int j = 0; j < data3DatW[i].length; j++) {
         for (int k = 0; k < data3DatW[i][j].length; k++) {
+        try {
           if (w == (double)(int)w) { //add another for loop to iterate through u, v, t
             data3DatW[i][j][k] = data[(int)w][i][j][k];
           } else {
             int flooredW = (int)w;
             data3DatW[i][j][k] = (1-(w-flooredW))*data4D[flooredW][i][j][k] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j][k];
           }
+        }
+        catch (Exception e) {}
         }
       }
     }

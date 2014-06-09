@@ -8,7 +8,7 @@ class DataParser {
     if (dimension >= 4)
       gui.initCycling();
     
-    printData();
+    //printData();
   }
 
   // Loads file into `arrayTable` 

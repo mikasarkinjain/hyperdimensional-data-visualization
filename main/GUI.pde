@@ -5,6 +5,7 @@ class GUI {
   final int UI_BUTTON_WIDTH = 100;
   final int UI_BUTTON_HEIGHT = 30;
   final int UI_BUTTON_YPOS = UI_WINDOW_PADDING;
+  final int UI_COLOR_SEPARATION = 40;
     
   boolean hoveringOverLoad = false;
   boolean hoveringOverPoints = false;
@@ -44,19 +45,19 @@ class GUI {
     else
       fill(255);
       
-    float x; float y;
+    float topX; float bottomX; float y;
     textSize(20);
     textAlign(CENTER, CENTER); // centered horizontally & vertically
     
     y = UI_BUTTON_YPOS;
-    x = UI_WINDOW_PADDING;
+    topX = UI_WINDOW_PADDING;
     
     stroke(1); // solid border
     if (hoveringOverLoad) // set in updateMouse()
       fill(200);
     else
       fill(255);
-    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
     stroke(1); // solid border
     if (hoveringOverPoints) // set in updateMouse()
@@ -64,11 +65,11 @@ class GUI {
     else
       fill(255);
     fill(0);
-    text("Load CSV", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    text("Load CSV", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
 
 
 
-    x += UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
+    topX += UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
     if (viewType != DATA_POINTS) // set in updateMouse()
       fill(0);
     else if (viewType == DATA_POINTS && !hoveringOverPoints)
@@ -76,7 +77,7 @@ class GUI {
     else if (viewType == DATA_POINTS && hoveringOverPoints)
       fill(200);
     
-    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
 
     if (viewType == DATA_POINTS)
@@ -85,18 +86,18 @@ class GUI {
       fill(200);
     else if (viewType != DATA_POINTS && hoveringOverPoints)
       fill(255);
-    text("Points", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    text("Points", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
 
 
 
-    x += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    topX += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
     if (viewType != BEST_FIT_MESH) // set in updateMouse()
       fill(0);
     else if (viewType == BEST_FIT_MESH && !hoveringOverMesh)
       fill(255);  
     else if (viewType == BEST_FIT_MESH && hoveringOverMesh)
       fill(200);
-    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
     if (viewType == BEST_FIT_MESH)
       fill(0);
@@ -104,19 +105,19 @@ class GUI {
       fill(200);
     else if (viewType != BEST_FIT_MESH && hoveringOverMesh)
       fill(255);
-    text("Mesh", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    text("Mesh", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
 
 
 
 
-    x += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    topX += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
     if (viewType != BEST_FIT_SURFACE) // set in updateMouse()
       fill(0);
     else if (viewType == BEST_FIT_SURFACE && !hoveringOverSurface)
       fill(255);  
     else if (viewType == BEST_FIT_SURFACE && hoveringOverSurface)
       fill(200);
-    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
     if (viewType == BEST_FIT_SURFACE)
       fill(0);
@@ -124,17 +125,26 @@ class GUI {
       fill(200);
     else if (viewType != BEST_FIT_SURFACE && hoveringOverSurface)
       fill(255);
-    text("Surface", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    text("Surface", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
+    fill(255);  
     
-    
+    rectMode(CORNER);
     if (dimension >= 4) {
-      x += UI_BUTTON_WIDTH + UI_GROUP_SEPARATION;
-      fill(255);
-      text(varLabels[3] + " = " + wValues[roundedWIndex], 300, height - UI_WINDOW_PADDING - 20);
+      text(varLabels[3] + " = " + wValues[roundedWIndex], 200, height - UI_WINDOW_PADDING - 20);
     }
     
-
+    if (dimension >= 5) {
+      text("Red: " + varLabels[4], 800, height - UI_WINDOW_PADDING - 20 - 2 * UI_COLOR_SEPARATION);      
+    }
+        
+    if (dimension >= 6) {
+      text("Green: " + varLabels[5], 800, height - UI_WINDOW_PADDING - 20 - UI_COLOR_SEPARATION);      
+    }
+        
+    if (dimension >= 7) {
+      text("Blue: " + varLabels[6], 800, height - UI_WINDOW_PADDING - 20);      
+    }
 
     hint(ENABLE_DEPTH_TEST);
   }
