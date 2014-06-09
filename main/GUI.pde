@@ -2,7 +2,7 @@ class GUI {
   final int UI_WINDOW_PADDING_BUTTONS = 5;
   final int UI_WINDOW_PADDING_TEXT = 10;
   final int UI_BUTTON_SEPARATION = 10;
-  final int UI_GROUP_SEPARATION = 100;
+  final int UI_GROUP_SEPARATION = 70;
   final int UI_BUTTON_WIDTH = 100;
   final int UI_BUTTON_HEIGHT = 30;
   final int UI_BUTTON_YPOS = UI_WINDOW_PADDING_BUTTONS;
@@ -34,6 +34,11 @@ class GUI {
     hoveringOverMesh = false;
     hoveringOverSurface = false;
     holdingWKey = false;
+    
+    if (fileName == null)
+      frame.setTitle("Hyperdimensional Data Visualization ");
+    else
+      frame.setTitle("Hyperdimensional Data Visualization - " + fileName);
     
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D
     noLights(); // otherwise it breaks
@@ -259,8 +264,13 @@ class GUI {
       return;
     
     filePath = selection.getAbsolutePath();
-    if (filePath.substring(filePath.length()-4).equals(".csv"))
+    
+    if (filePath.substring(filePath.length()-4).equals(".csv")) {
+      fileName = selection.getName();
       dataParser.loadData();
+    }
+    else
+      fileName = null;
   }
 }
 

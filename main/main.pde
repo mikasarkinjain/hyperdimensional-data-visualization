@@ -81,6 +81,7 @@ final int DATA_COLOR_B = 221;
 
 /* GUI VARS */
 String filePath;
+String fileName;
 
 double maxAxisLength;
 double currentWValue;
@@ -94,6 +95,7 @@ void setup() {
 }
 
 void draw() {
+  background(BACKGROUND_SHADE);
   camera.prepareCanvas();
   graph.graph();
   gui.drawUI(); // 2D stuff must be last
