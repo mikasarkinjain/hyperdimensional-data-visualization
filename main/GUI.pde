@@ -46,7 +46,7 @@ class GUI {
       fill(255);
       
     float topX; float bottomX; float y;
-    textSize(20);
+    textSize(11);
     textAlign(CENTER, CENTER); // centered horizontally & vertically
     
     y = UI_BUTTON_YPOS;
