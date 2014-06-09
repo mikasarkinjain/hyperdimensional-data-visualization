@@ -46,22 +46,22 @@ class Graph {
     scale(1, -1);
     try{
       textAlign(LEFT);
-      text(varLabels[0]+" "+maxX, (float)axisLength/2, 0, 0);
+      text(varLabels[0]+" "+ humanReadableDouble(maxX), (float)axisLength/2, 0, 0);
       
       textAlign(RIGHT);
       if (dimension >= 2) 
-        text(varLabels[1]+" "+maxY, 0, 0, (float)axisLength/2);
+        text(varLabels[1]+" "+humanReadableDouble(maxY), 0, 0, (float)axisLength/2);
       if (dimension >= 3)
-        text(varLabels[2]+" "+maxZ, 0, (float)-axisLength/2, 0);
+        text(varLabels[2]+" "+humanReadableDouble(maxZ), 0, (float)-axisLength/2, 0);
     
       textAlign(LEFT);        
-      text(varLabels[0]+" "+minX, (float)axisLength/32, 0, 0);
+      text(varLabels[0]+" "+ humanReadableDouble(minX), (float)axisLength/32, 0, 0);
       
       textAlign(RIGHT);
       if (dimension >= 2)
-        text(varLabels[1]+" "+minY, 0, 0, (float)axisLength/32);
+        text(varLabels[1]+" " + humanReadableDouble(minY), 0, 0, (float)axisLength/32);
       if (dimension >= 3)
-        text(varLabels[2]+" "+minZ, 0, (float)-axisLength/32, 0);
+        text(varLabels[2]+" " + humanReadableDouble(minZ), 0, (float)-axisLength/32, 0);
         
     } catch(NullPointerException e) {
       textAlign(LEFT);        
@@ -99,14 +99,14 @@ class Graph {
   
   void graph1D() {
     noStroke(); 
-    fill(255, 0, 0); 
+    fill(DATA_COLOR_R, DATA_COLOR_G, DATA_COLOR_B); 
     if (data1D != null) {
       plotPoint(-(data1D-minX)/(maxX-minX)*maxDimensionLength, 0, 0);
     }
   }
 
   void graph2D() {
-    stroke(175, 200, 230);  
+    stroke(DATA_COLOR_R, DATA_COLOR_G, DATA_COLOR_B);  
     noFill();
 
     double dialationFactorX = maxDimensionLength/(data2D.length-1);
@@ -157,15 +157,9 @@ class Graph {
       for (int j = 0; j < data[0].length-1; j++) { //assumes data3D is rectangular
 
         try {
-          float plotColorR = 175;
-          float plotColorG = 200;
-          float plotColorB = 230;
-
-          if (dimension == 3) { //gray for now, should be changed 
-            plotColorR = 175;  
-            plotColorG = 200;
-            plotColorB = 230;
-          }
+            float plotColorR = DATA_COLOR_R;
+            float plotColorG = DATA_COLOR_G;
+            float plotColorB = DATA_COLOR_B;
 
           if (dimension >= 5) {
             plotColorR = (float) (((data[i][j][1]-minU)/(maxU-minU) * 255  +
@@ -233,27 +227,23 @@ class Graph {
     
     for (int i = 0; i < arrayTable.length; i++) {
       try {
-        if (arrayTable[i].length == 1) {
-          fill(255, 0, 0);
-          noStroke();
+        noStroke();
+        // set sphere color to default, since there aren't any U, V, or T values to dicatte it
+        if (arrayTable[i].length <= 4)
+          fill(DATA_COLOR_R, DATA_COLOR_G, DATA_COLOR_B);
           
+        if (arrayTable[i].length == 1) {
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           plotPoint(-x, 0, 0);
         }
 
         if (arrayTable[i].length == 2) {
-          fill(255, 0, 0);
-          noStroke();
-
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           plotPoint(-x, -y, 0);
         }
 
         if (arrayTable[i].length == 3) {
-          fill(255, 0, 0);
-          noStroke();
-
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;;
@@ -261,9 +251,6 @@ class Graph {
           plotPoint(-x, -y, z);
         }
         if (arrayTable[i].length == 4 && arrayTable[i][3] == roundedW) {
-          fill(255, 0, 0);
-          noStroke();
-          
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
@@ -274,7 +261,6 @@ class Graph {
         if (arrayTable[i].length == 5 && arrayTable[i][3] == roundedW) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           fill(R, 0, 0);
-          noStroke();
 
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
@@ -287,7 +273,6 @@ class Graph {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           fill(R, G, 0);
-          noStroke();
 
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
@@ -301,7 +286,6 @@ class Graph {
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));
           fill(R, G, B);
-          noStroke();
 
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;

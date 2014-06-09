@@ -74,6 +74,9 @@ float transY;
 float FOV;
 
 final int BACKGROUND_SHADE = 17;
+final int DATA_COLOR_R = 60;
+final int DATA_COLOR_G = 188;
+final int DATA_COLOR_B = 221;
 
 
 /* GUI VARS */
