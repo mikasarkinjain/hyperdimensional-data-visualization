@@ -88,7 +88,6 @@ class Graph {
   double x2, double y2, double z2, 
   double x3, double y3, double z3, 
   double x4, double y4, double z4) {
-    println("plotQuad");
     beginShape();
     vertex((float)x1, (float)y1, (float)z1);
     vertex((float)x2, (float)y2, (float)z2);
@@ -257,7 +256,7 @@ class Graph {
         if (arrayTable[i].length == 4 && arrayTable[i][3] == roundedW) {
           fill(255, 0, 0);
           noStroke();
-
+          
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
