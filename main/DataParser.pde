@@ -7,9 +7,8 @@ class DataParser {
     
     if (dimension >= 4)
       gui.initCycling();
-    
-    //printData();
   }
+
 
   // Loads file into `arrayTable` 
   void loadAsTable() {
@@ -26,6 +25,12 @@ class DataParser {
       varLabels[i] = labelsRow.getString(i);
     }
     table.removeRow(0);
+    
+    // We use wLocation because it's possible that there'll be a variable named "year" or so in a different
+    // column than the default column for W (the fourth). We want time variables to be W so that users
+    // can cycle through them rather than through a less relevant piece of data.    
+    int wLocation = findWLocation();
+    swap(varLabels, 3, wLocation);
 
     // fill arrayTable
     arrayTable = new Double[table.getRowCount()][dimension];
@@ -33,17 +38,36 @@ class DataParser {
 
     for (int row = 0; row < table.getRowCount (); row++)
       for (int col = 0; col < dimension; col++) {
-
+        
         // there's no table.getDouble, so we do table.getString and parse it as Double
         String stringDataValue = table.getString(row, col);
+        
+        int colInArrayTable = col;
+        if (col == 3)
+          colInArrayTable = wLocation;
+        else if (col == wLocation)
+          colInArrayTable = 3;
 
         if (stringDataValue.length() == 0) { // for data like 1.0, 2.0, , 4.0
-          arrayTable[row][col] = null;
-
-          nullValuesCount[col]++;
+          arrayTable[row][colInArrayTable] = null;
+          nullValuesCount[colInArrayTable]++;
         } else
-          arrayTable[row][col] = Double.parseDouble(stringDataValue);
+          arrayTable[row][colInArrayTable] = Double.parseDouble(stringDataValue);
       }
+  }
+  
+  int findWLocation() {
+    for (int i = 0; i < varLabels.length; i++)
+      if (varLabels[i].toLowerCase().indexOf("year") != -1 || 
+      varLabels[i].toLowerCase().indexOf("time") != -1 || 
+      varLabels[i].toLowerCase().indexOf("month") != -1 ||
+      varLabels[i].toLowerCase().indexOf("day") != -1 ||
+      varLabels[i].toLowerCase().indexOf("hour") != -1 ||
+      varLabels[i].toLowerCase().indexOf("minute") != -1 ||
+      varLabels[i].toLowerCase().indexOf("second") != -1)
+        return i;
+    
+    return 3;
   }
 
   // finds min and max
@@ -212,6 +236,12 @@ class DataParser {
   double weightedAverage(double currentAverage, double numItems, double newItem) {
     return (currentAverage * numItems + newItem)  / (numItems + 1);
   }   
+  
+  void swap(String[] arr, int ind1, int ind2) {
+    String tmp = arr[ind1];
+    arr[ind1] = arr[ind2];
+    arr[ind2] = tmp;  
+  }
   /* END OF HELPER FUNCTIONS */
 
   void load1D() {
@@ -441,11 +471,13 @@ class DataParser {
                 valAtIndex(y, minY, incrementY) + "\t" +
                 matrix[w][x][y][0] + "\t " +
                 valAtIndex(w, minW, incrementW) + "\t");
-
-              if (dimension >= 6)
+                
+              if (dimension >= 5)
                 print(matrix[w][x][y][1] + "\t");
-              if (dimension >= 7)
+              if (dimension >= 6)
                 print(matrix[w][x][y][2] + "\t");
+              if (dimension >= 7)
+                print(matrix[w][x][y][3] + "\t");
               print("\n");
             }
           }
