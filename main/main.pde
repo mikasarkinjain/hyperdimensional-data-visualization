@@ -12,7 +12,7 @@ double w;
 int roundedWIndex;
 
 /* DATA STRUCTURES */
-int dimension;
+int dimension = 3;
 String[] varLabels;
 Double[][] arrayTable;
 
