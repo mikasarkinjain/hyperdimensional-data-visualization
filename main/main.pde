@@ -67,7 +67,7 @@ double cameraZ = 0;
 float nearCuttingPlaneZ;
 float farCuttingPlaneZ;
 
-float rotX = 0;
+float rotX = PI;
 float rotY = 0;
 float transX;
 float transY;
