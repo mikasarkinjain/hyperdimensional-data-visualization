@@ -191,10 +191,10 @@ class Graph {
           }
 
 
-          plotQuad((double)((i)*dialationFactorX), (data[i][j][0]-minZ)*dialationFactorZ, (double)((j)*dialationFactorY), //replaced y-val with z-val to make graphing more intuitive
-          (double)((i+1)*dialationFactorX), (data[i+1][j][0]-minZ)*dialationFactorZ-minZ, (double)((j)*dialationFactorY), 
-          (double)((i+1)*dialationFactorX), (data[i+1][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY), 
-          (double)((i)*dialationFactorX), (data[i][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY));
+          plotQuad((double)((i)*dialationFactorX), -(data[i][j][0]-minZ)*dialationFactorZ, (double)((j)*dialationFactorY), //replaced y-val with z-val to make graphing more intuitive
+          (double)((i+1)*dialationFactorX), -(data[i+1][j][0]-minZ)*dialationFactorZ-minZ, (double)((j)*dialationFactorY), 
+          (double)((i+1)*dialationFactorX), -(data[i+1][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY), 
+          (double)((i)*dialationFactorX), -(data[i][j+1][0]-minZ)*dialationFactorZ-minZ, (double)((j+1)*dialationFactorY));
         }
         catch(NullPointerException e) {
         } //not the best thing to do if there is no data point but what else?
@@ -219,8 +219,12 @@ class Graph {
     if (dimension >= 3 && maxZ > minZ)
       dilationFactorZ = 1 / (maxZ - minZ) * maxDimensionLength;
       
-    double roundedW = wValues[roundedWIndex];
-
+    double roundedW = 0;
+      
+    if (dimension >= 4){
+      roundedW = wValues[roundedWIndex];
+    }
+    
     for (int i = 0; i < arrayTable.length; i++) {
       try {
         if (arrayTable[i].length == 1) {
@@ -248,7 +252,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;;
 
-          plotPoint(x, z, y);
+          plotPoint(-x, -y, z);
         }
         if (arrayTable[i].length == 4 && arrayTable[i][3] == roundedW) {
           fill(255, 0, 0);
