@@ -73,6 +73,8 @@ float transX;
 float transY;
 float FOV;
 
+final int BACKGROUND_SHADE = 17;
+
 
 /* GUI VARS */
 String filePath;

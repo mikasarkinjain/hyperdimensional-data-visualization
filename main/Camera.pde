@@ -6,7 +6,7 @@ class Camera {
   }
 
   void prepareCanvas() {
-    background(17);
+    background(BACKGROUND_SHADE);
     lights();
     translate(transX, transY, -100);
     rotateX(rotX);

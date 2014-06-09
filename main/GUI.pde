@@ -6,6 +6,7 @@ class GUI {
   final int UI_BUTTON_HEIGHT = 30;
   final int UI_BUTTON_YPOS = UI_WINDOW_PADDING;
   final int UI_COLOR_SEPARATION = 40;
+  final int UI_TEXT_SIZE = 13;
     
   boolean hoveringOverLoad = false;
   boolean hoveringOverPoints = false;
@@ -39,27 +40,25 @@ class GUI {
     perspective(); // reset perspective
     updateMouse();
 
-    stroke(1); // solid border
+    noStroke();
     if (hoveringOverLoad) // set in updateMouse()
       fill(200);
     else
       fill(255);
       
     float topX; float bottomX; float y;
-    textSize(11);
+    textSize(UI_TEXT_SIZE);
     textAlign(CENTER, CENTER); // centered horizontally & vertically
     
     y = UI_BUTTON_YPOS;
     topX = UI_WINDOW_PADDING;
     
-    stroke(1); // solid border
     if (hoveringOverLoad) // set in updateMouse()
       fill(200);
     else
       fill(255);
     rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
-    stroke(1); // solid border
     if (hoveringOverPoints) // set in updateMouse()
       fill(200);
     else
@@ -71,7 +70,7 @@ class GUI {
 
     topX += UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
     if (viewType != DATA_POINTS) // set in updateMouse()
-      fill(0);
+      fill(BACKGROUND_SHADE);
     else if (viewType == DATA_POINTS && !hoveringOverPoints)
       fill(255);  
     else if (viewType == DATA_POINTS && hoveringOverPoints)
@@ -81,7 +80,7 @@ class GUI {
     
 
     if (viewType == DATA_POINTS)
-      fill(0);
+      fill(BACKGROUND_SHADE);
     else if (viewType != DATA_POINTS && !hoveringOverPoints)
       fill(200);
     else if (viewType != DATA_POINTS && hoveringOverPoints)
@@ -91,8 +90,27 @@ class GUI {
 
 
     topX += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    if (viewType != BEST_FIT_SURFACE) // set in updateMouse()
+      fill(BACKGROUND_SHADE);
+    else if (viewType == BEST_FIT_SURFACE && !hoveringOverSurface)
+      fill(255);  
+    else if (viewType == BEST_FIT_SURFACE && hoveringOverSurface)
+      fill(200);
+    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    if (viewType == BEST_FIT_SURFACE)
+      fill(BACKGROUND_SHADE);
+    else if (viewType != BEST_FIT_SURFACE && !hoveringOverSurface)
+      fill(200);
+    else if (viewType != BEST_FIT_SURFACE && hoveringOverSurface)
+      fill(255);
+    text("Surface", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    
+
+    topX += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
     if (viewType != BEST_FIT_MESH) // set in updateMouse()
-      fill(0);
+      fill(BACKGROUND_SHADE);
     else if (viewType == BEST_FIT_MESH && !hoveringOverMesh)
       fill(255);  
     else if (viewType == BEST_FIT_MESH && hoveringOverMesh)
@@ -100,7 +118,7 @@ class GUI {
     rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
     if (viewType == BEST_FIT_MESH)
-      fill(0);
+      fill(BACKGROUND_SHADE);
     else if (viewType != BEST_FIT_MESH && !hoveringOverMesh)
       fill(200);
     else if (viewType != BEST_FIT_MESH && hoveringOverMesh)
@@ -109,23 +127,6 @@ class GUI {
 
 
 
-
-    topX += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
-    if (viewType != BEST_FIT_SURFACE) // set in updateMouse()
-      fill(0);
-    else if (viewType == BEST_FIT_SURFACE && !hoveringOverSurface)
-      fill(255);  
-    else if (viewType == BEST_FIT_SURFACE && hoveringOverSurface)
-      fill(200);
-    rect(topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
-    
-    if (viewType == BEST_FIT_SURFACE)
-      fill(0);
-    else if (viewType != BEST_FIT_SURFACE && !hoveringOverSurface)
-      fill(200);
-    else if (viewType != BEST_FIT_SURFACE && hoveringOverSurface)
-      fill(255);
-    text("Surface", topX, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
     fill(255);  
     
@@ -157,10 +158,10 @@ class GUI {
       hoveringOverPoints = true;
       
     else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION, UI_BUTTON_YPOS, 100, 30))
-      hoveringOverMesh = true;
+      hoveringOverSurface = true;
           
     else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION, UI_BUTTON_YPOS, 100, 30))
-      hoveringOverSurface = true;
+      hoveringOverMesh = true;
   }
 
   boolean mouseOverRect(int rectX, int rectY, int rectWidth, int rectHeight) {
@@ -250,8 +251,10 @@ class GUI {
   }
 
   void fileSelected(File selection) {
-    if (selection != null)
-      filePath = selection.getAbsolutePath();
+    if (selection == null)
+      return;
+    
+    filePath = selection.getAbsolutePath();
     if (filePath.substring(filePath.length()-4).equals(".csv"))
       dataParser.loadData();
   }

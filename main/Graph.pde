@@ -15,7 +15,7 @@ class Graph {
  void graph(){
     translate((float)-axisLength/4, (float)-axisLength/4, (float)-axisLength/4);
     drawAxis();
-    if (viewType == BEST_FIT_MESH || viewType == BEST_FIT_SURFACE){
+    if (arrayTable != null && (viewType == BEST_FIT_MESH || viewType == BEST_FIT_SURFACE)){
       if (dimension == 1) graph1D();
       if (dimension == 2) graph2D();
       if (dimension == 3) graph3Dfor3Dto7D(data3D);
@@ -24,7 +24,8 @@ class Graph {
       if (dimension == 6) graph4Dfor4Dto7D(data6D);
       if (dimension == 7) graph4Dfor4Dto7D(data7D);
     }
-    else if (viewType == 2 && arrayTable != null){
+    
+    else if (arrayTable != null && viewType == 2 ){
       graphPoints();
     }
     translate(0,0,0);
