@@ -37,8 +37,12 @@ class Graph {
   void drawAxis(){
     stroke(255);
     line(0, 0, 0, (float)axisLength/2, 0, 0);
-    line(0, 0, 0, 0, (float)axisLength/2, 0);
-    line(0, 0, 0, 0, 0, (float)axisLength/2);
+    if (dimension >= 2){
+      line(0, 0, 0, 0, 0, (float)axisLength/2);
+    }
+    if (dimension >= 3){
+      line(0, 0, 0, 0, (float)axisLength/2, 0);
+    }
     
     fill(255);
     textSize(10);
@@ -98,11 +102,10 @@ class Graph {
   
   void graph1D() {
     noStroke(); 
-    fill(255, 0, 0); //white for now, should be changed
+    fill(255, 0, 0); 
     if (data1D != null) {
-      plotPoint(0, 0, 0);
+      plotPoint(-(data1D-minX)/(maxX-minX)*maxDimensionLength, 0, 0);
     }
-    //label(0, 0, 0, "X "+data1D);  //sudo code
   }
 
   void graph2D() {
@@ -131,10 +134,14 @@ class Graph {
         for (int k = 0; k < data3DatW[i][j].length; k++) {
         try {
           if (w == (double)(int)w) { //add another for loop to iterate through u, v, t
-            data3DatW[i][j][k] = data[(int)w][i][j][k];
-          } else {
-            int flooredW = (int)w;
-            data3DatW[i][j][k] = (1-(w-flooredW))*data4D[flooredW][i][j][k] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j][k];
+            try{
+              data3DatW[i][j][k] = data[(int)w][i][j][k];
+            } catch (Exception e){}
+        } else {
+            try{
+              int flooredW = (int)w;
+              data3DatW[i][j][k] = (1-(w-flooredW))*data4D[flooredW][i][j][k] + (1-(flooredW+1-w))*data4D[flooredW+1][i][j][k];
+            } catch (Exception e){}
           }
         }
         catch (Exception e) {}
@@ -234,7 +241,7 @@ class Graph {
           noStroke();
           
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
-          plotPoint(0, 0, x);
+          plotPoint(-x, 0, 0);
         }
 
         if (arrayTable[i].length == 2) {
@@ -243,7 +250,7 @@ class Graph {
 
           double x = (arrayTable[i][0] - minX) * dilationFactorX;
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
-          plotPoint(x, y, 0);
+          plotPoint(-x, -y, 0);
         }
 
         if (arrayTable[i].length == 3) {
