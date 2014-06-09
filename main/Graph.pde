@@ -109,7 +109,7 @@ class Graph {
   }
 
   void graph2D() {
-    stroke(255); //white for now, should be changes 
+    stroke(175, 200, 230);  
     noFill();
 
     double dialationFactorX = maxDimensionLength/(data2D.length-1);
@@ -118,8 +118,8 @@ class Graph {
 
     for (int i = 0; i < data2D.length-1; i++) {
       try {
-        plotLine(i*dialationFactorX, (data2D[i]-minY)*dialationFactorY, 0.0, 
-        (i+1)*dialationFactorX, (data2D[i+1]-minY)*dialationFactorY, 0.0);
+        plotLine(i*dialationFactorX, 0.0, (data2D[i]-minY)*dialationFactorY, 
+        (i+1)*dialationFactorX, 0.0, (data2D[i+1]-minY)*dialationFactorY);
       }
       catch(NullPointerException e) {
       } //not the best thing to do if there is no data point but what else?
