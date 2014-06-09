@@ -99,7 +99,7 @@ class Graph {
   
   void graph1D() {
     noStroke(); 
-    fill(255); //white for now, should be changed
+    fill(255, 0, 0); //white for now, should be changed
     if (data1D != null) {
       plotPoint(0, 0, 0);
     }
@@ -151,14 +151,14 @@ class Graph {
       for (int j = 0; j < data[0].length-1; j++) { //assumes data3D is rectangular
 
         try {
-          float plotColorR = 0;
-          float plotColorG = 0;
-          float plotColorB = 0;
+          float plotColorR = 175;
+          float plotColorG = 200;
+          float plotColorB = 230;
 
           if (dimension == 3) { //gray for now, should be changed 
-            plotColorR = 200;  
+            plotColorR = 175;  
             plotColorG = 200;
-            plotColorB = 200;
+            plotColorB = 230;
           }
 
           if (dimension >= 5) {
@@ -262,7 +262,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, -z, y);
+          plotPoint(-x, -y, z);
         }
 
         if (arrayTable[i].length == 5 && arrayTable[i][3] == roundedW) {
@@ -274,7 +274,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, z, y);
+          plotPoint(-x, -y, z);
         }
 
         if (arrayTable[i].length == 6 && arrayTable[i][3] == roundedW) {
@@ -287,7 +287,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, -z, y);
+          plotPoint(-x, -y, z);
         }
 
          if (arrayTable[i].length == 7 && arrayTable[i][3] == roundedW) {
@@ -301,7 +301,7 @@ class Graph {
           double y = (arrayTable[i][1] - minY) * dilationFactorY;
           double z = (arrayTable[i][2] - minZ) * dilationFactorZ;
 
-          plotPoint(x, -z, y);
+          plotPoint(-x, -y, z);
         }
       }
       catch (NullPointerException e) {
