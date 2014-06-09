@@ -30,23 +30,25 @@ class DataParser {
     // column than the default column for W (the fourth). We want time variables to be W so that users
     // can cycle through them rather than through a less relevant piece of data.    
     int wLocation = findWLocation();
-    swap(varLabels, 3, wLocation);
+    if (dimension >= 4)
+      swap(varLabels, 3, wLocation);
 
     // fill arrayTable
     arrayTable = new Double[table.getRowCount()][dimension];
     nullValuesCount = new int[7];
 
-    for (int row = 0; row < table.getRowCount (); row++)
+    for (int row = 0; row < table.getRowCount(); row++)
       for (int col = 0; col < dimension; col++) {
-        
         // there's no table.getDouble, so we do table.getString and parse it as Double
         String stringDataValue = table.getString(row, col);
         
         int colInArrayTable = col;
-        if (col == 3)
-          colInArrayTable = wLocation;
-        else if (col == wLocation)
-          colInArrayTable = 3;
+        if (dimension >= 4) {
+          if (col == 3)
+            colInArrayTable = wLocation;
+          else if (col == wLocation)
+            colInArrayTable = 3;
+        }
 
         if (stringDataValue.length() == 0) { // for data like 1.0, 2.0, , 4.0
           arrayTable[row][colInArrayTable] = null;

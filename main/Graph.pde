@@ -315,4 +315,12 @@ class Graph {
       }
     }
   }
+  
+  // chops off decimal part if unnecessary. 86.00 becomes "86"
+  String humanReadableDouble(double n) {
+    if (n == (double) (int) n)
+      return "" + (int) n;
+    else
+      return "" + n;  
+  }
 }

@@ -130,21 +130,22 @@ class GUI {
     
     fill(255);  
     
-    rectMode(CORNER);
-    if (dimension >= 4) {
-      text(varLabels[3] + " = " + wValues[roundedWIndex], 200, height - UI_WINDOW_PADDING - 20);
+    textAlign(LEFT, CENTER);
+    if (dimension >= 4) { 
+      text(varLabels[3] + " = " + graph.humanReadableDouble(wValues[roundedWIndex]), UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - UI_TEXT_SIZE);
     }
     
     if (dimension >= 5) {
-      text("Red: " + varLabels[4], 800, height - UI_WINDOW_PADDING - 20);      
+      textAlign(RIGHT, CENTER);
+      text("Red: " + varLabels[4], width - UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - 20);
     }
         
     if (dimension >= 6) {
-      text("Green: " + varLabels[5], 800, height - UI_WINDOW_PADDING - 20 - UI_COLOR_SEPARATION);      
+      text("Green: " + varLabels[5], width - UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - 20 - UI_COLOR_SEPARATION);      
     }
         
     if (dimension >= 7) {
-      text("Blue: " + varLabels[6], 800, height - UI_WINDOW_PADDING - 20 - 2 * UI_COLOR_SEPARATION);      
+      text("Blue: " + varLabels[6], width - UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - 20 - 2 * UI_COLOR_SEPARATION);      
     }
 
     hint(ENABLE_DEPTH_TEST);
