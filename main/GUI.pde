@@ -1,9 +1,10 @@
 class GUI {
   final int UI_WINDOW_PADDING = 5;
   final int UI_BUTTON_SEPARATION = 10;
-  final int UI_GROUP_SEPARATION = 30;
+  final int UI_GROUP_SEPARATION = 100;
   final int UI_BUTTON_WIDTH = 100;
   final int UI_BUTTON_HEIGHT = 30;
+  final int UI_BUTTON_YPOS = UI_WINDOW_PADDING;
     
   boolean hoveringOverLoad = false;
   boolean hoveringOverPoints = false;
@@ -21,7 +22,7 @@ class GUI {
   void initCycling() {
     w = wValues[wValues.length / 2]; // set W to middle of Ws
     roundedWIndex = wValues.length / 2;
-    CYCLE_RATE = (float) (4 * (maxW - minW) / height);
+    CYCLE_RATE = (float) (5 * (maxW - minW) / height);
   }
 
   void drawUI() {
@@ -47,8 +48,8 @@ class GUI {
     textSize(20);
     textAlign(CENTER, CENTER); // centered horizontally & vertically
     
+    y = UI_BUTTON_YPOS;
     x = UI_WINDOW_PADDING;
-    y = height - UI_WINDOW_PADDING - UI_BUTTON_HEIGHT;
     
     stroke(1); // solid border
     if (hoveringOverLoad) // set in updateMouse()
@@ -67,57 +68,88 @@ class GUI {
 
 
 
-    x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
-    if (hoveringOverPoints) // set in updateMouse()
+    x += UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
+    if (viewType != DATA_POINTS) // set in updateMouse()
+      fill(0);
+    else if (viewType == DATA_POINTS && !hoveringOverPoints)
+      fill(255);  
+    else if (viewType == DATA_POINTS && hoveringOverPoints)
       fill(200);
-    else
-      fill(255);
+    
     rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
-    fill(0);
+
+    if (viewType == DATA_POINTS)
+      fill(0);
+    else if (viewType != DATA_POINTS && !hoveringOverPoints)
+      fill(200);
+    else if (viewType != DATA_POINTS && hoveringOverPoints)
+      fill(255);
     text("Points", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
 
 
 
-
-    x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
-    if (hoveringOverMesh) // set in updateMouse()
+    x += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    if (viewType != BEST_FIT_MESH) // set in updateMouse()
+      fill(0);
+    else if (viewType == BEST_FIT_MESH && !hoveringOverMesh)
+      fill(255);  
+    else if (viewType == BEST_FIT_MESH && hoveringOverMesh)
       fill(200);
-    else
-      fill(255);
     rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
-    fill(0);
+    if (viewType == BEST_FIT_MESH)
+      fill(0);
+    else if (viewType != BEST_FIT_MESH && !hoveringOverMesh)
+      fill(200);
+    else if (viewType != BEST_FIT_MESH && hoveringOverMesh)
+      fill(255);
     text("Mesh", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
 
 
 
 
-   x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION;
-   if (hoveringOverSurface) // set in updateMouse()
+    x += UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    if (viewType != BEST_FIT_SURFACE) // set in updateMouse()
+      fill(0);
+    else if (viewType == BEST_FIT_SURFACE && !hoveringOverSurface)
+      fill(255);  
+    else if (viewType == BEST_FIT_SURFACE && hoveringOverSurface)
       fill(200);
-    else
-      fill(255);
     rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
     
-    fill(0);
+    if (viewType == BEST_FIT_SURFACE)
+      fill(0);
+    else if (viewType != BEST_FIT_SURFACE && !hoveringOverSurface)
+      fill(200);
+    else if (viewType != BEST_FIT_SURFACE && hoveringOverSurface)
+      fill(255);
     text("Surface", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    
+    
+    if (dimension >= 4) {
+      x += UI_BUTTON_WIDTH + UI_GROUP_SEPARATION;
+      fill(255);
+      text(varLabels[3] + " = " + wValues[roundedWIndex], 300, height - UI_WINDOW_PADDING - 20);
+    }
+    
 
 
     hint(ENABLE_DEPTH_TEST);
   }
 
   void updateMouse() {
-    if (mouseOverRect(UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - 30, 100, 30))
+    if (mouseOverRect(UI_WINDOW_PADDING, UI_BUTTON_YPOS, 100, 30))
       hoveringOverLoad = true;
     
-    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + UI_BUTTON_WIDTH, height - UI_WINDOW_PADDING - 30, 100, 30))
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + UI_BUTTON_WIDTH, UI_BUTTON_YPOS, 100, 30))
       hoveringOverPoints = true;
       
-    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION, height - UI_WINDOW_PADDING - 30, 100, 30))
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION, UI_BUTTON_YPOS, 100, 30))
       hoveringOverMesh = true;
           
-    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION, height - UI_WINDOW_PADDING - 30, 100, 30))
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION, UI_BUTTON_YPOS, 100, 30))
       hoveringOverSurface = true;
   }
 
