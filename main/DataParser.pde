@@ -7,7 +7,8 @@ class DataParser {
     
     if (dimension >= 4)
       gui.initCycling();
-    //printDataHuman();
+    
+    printData();
   }
 
   // Loads file into `arrayTable` 
@@ -193,7 +194,6 @@ class DataParser {
 
 
   /* HELPER METHODS FOR loadAsArray() */
-
   // rounds raw data value to uniform value
   double roundValue(double value, double min, double increment) {
     return min + Math.round((value - min) / increment) * increment;
@@ -453,88 +453,76 @@ class DataParser {
       }
     }
   }
-
+  
   void printData() {
-    println();
+    switch(dimension) {
+      case 1: println(data1D);
+      case 2: print1DArray(data2D);
+      case 3: print3DArray(data3D);
+      case 4: print4DArray(data4D);
+      case 5: print4DArray(data5D);
+      case 6: print4DArray(data6D);
+      case 7: print4DArray(data7D);
+    }  
+  }
 
-    String formatter = "";
-
-    if (dimension >= 2)
-      println("incrementX " + incrementX);
-    if (dimension >= 3)
-      println("incrementY " + incrementY);
-    if (dimension >= 4)
-      println("incrementW " + incrementW);
-
-
-    for (String label : varLabels) {
-      print(label + formatter);
+  void print1DArray(Double[] data){
+    if (data == null)
+      return;
+      
+    print("[");
+    for (int i = 0; i < data.length - 1; i++){
+      if (data[i] != null)
+        print(data[i]);
+      else
+        print("null");
+      
+      print(", ");
+    } 
+    if (data[data.length - 1] != null)
+      print(data[data.length - 1]);
+    else
+      print("null"); // strangely, printing a null (not println) throws NullPointerException
+    
+    print("]");
+  }
+  
+  void print2DArray(Double[][] data){
+    if (data == null)
+      return;
+     
+    print("[");
+    for (int i = 0; i < data.length - 1; i++){
+      print1DArray(data[i]);
+      print(", ");
     }
-    println();
-
-    if (dimension == 1)
-      println(data1D);
-
-    else if (dimension == 2) {
-      print("[");
-      for (int x = 0; x < data2D.length; x++) {
-        print(data2D[x]);
-        if (x < data2D.length - 1)
-          print(",");
-      }
-      println("]");
-    } else if (dimension == 3) {
-      print("[");
-      for (int x = 0; x < data3D.length; x++) {
-        print("[");
-        for (int y = 0; y < data3D[x].length; y++) {
-          print(valAtIndex(x, minX, incrementX) + ", " + formatter + 
-            valAtIndex(y, minY, incrementY) + ", " + formatter +
-            data3D[x][y][0]);
-        }
-        print("]");
-        if (x < data3D.length - 1)
-          print(",");
-      }
-      println("]");
-    } else if (dimension >= 4) {
-      Double[][][][] matrix;
-      switch(dimension) {
-      case 4: 
-        matrix = data4D; 
-        break;
-      case 5: 
-        matrix = data5D; 
-        break;
-      case 6: 
-        matrix = data6D; 
-        break;
-      case 7: 
-        matrix = data7D; 
-        break;
-      default: 
-        matrix = data5D; 
-        break;
-      }
-
-      for (int w = 0; w < matrix.length; w++) {
-        for (int x = 0; x < matrix[w].length; x++) {
-          for (int y = 0; y < matrix[w][x].length; y++) {
-
-            print(valAtIndex(x, minX, incrementX) + "\t" + 
-              valAtIndex(y, minY, incrementY) + "\t" +
-              valAtIndex(w, minW, incrementW) + "\t" +
-              matrix[w][x][y][0] + " ");
-
-            if (dimension >= 6)
-              print(matrix[w][x][y][1] + "\t");
-            if (dimension >= 7)
-              print(matrix[w][x][y][2] + "\t");
-            print("\n");
-          }
-        }
-      }
+    print1DArray(data[data.length - 1]);
+    print("]");
+  }
+  
+  void print3DArray(Double[][][] data){
+    if (data == null)
+      return;
+     
+    print("[");
+    for (int i = 0; i < data.length - 1; i++){
+      print2DArray(data[i]);
+      print(", ");
     }
+    print2DArray(data[data.length - 1]);
+    print("]");
+  }
+
+  void print4DArray(Double[][][][] data) {
+    if (data == null)
+      return;
+    
+    println("["); 
+    for (int wIndex = 0; wIndex < data.length - 1; wIndex++) {
+      print3DArray(data[wIndex]);
+      println(", ");
+    }
+    print3DArray(data[data.length-1]);
+    print("\n]");
   }
 }
-
