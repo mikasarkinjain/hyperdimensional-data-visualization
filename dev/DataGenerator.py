@@ -1,5 +1,7 @@
 length = 4;
 
+print "X, Y, Z, W, U, V, T"
+
 ans = ""
 for i in range(0, length):
     for j in range(0, length):
