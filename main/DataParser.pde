@@ -4,7 +4,9 @@ class DataParser {
     loadAsTable(); // arrayTable
     getMinMax(); // minX, maxX, etc.
     loadAsArray(); // data1D, data2D, etc.
-    gui.initCycling();
+    
+    if (dimension >= 4)
+      gui.initCycling();
     //printDataHuman();
   }
 

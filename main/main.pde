@@ -89,6 +89,7 @@ void setup() {
 }
 
 void draw() {
+  println(viewType);
   camera.prepareCanvas();
   graph.graph();
   gui.drawUI(); // 2D stuff must be last

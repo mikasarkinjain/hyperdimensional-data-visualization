@@ -1,11 +1,21 @@
 class GUI {
+  final int UI_WINDOW_PADDING = 5;
+  final int UI_BUTTON_SEPARATION = 10;
+  final int UI_GROUP_SEPARATION = 30;
+  final int UI_BUTTON_WIDTH = 100;
+  final int UI_BUTTON_HEIGHT = 30;
+    
+  boolean hoveringOverLoad = false;
+  boolean hoveringOverPoints = false;
+  boolean hoveringOverMesh = false;
+  boolean hoveringOverSurface = false;
+  boolean holdingWKey = false;
+  
   final float ROTATE_RATE = 0.01;
   final float PAN_RATE = 4;
   float CYCLE_RATE = 1; // for changing W. is not final because depends on data set.
   final float ZOOM_RATE = 1.02;
-  
-  boolean hoveringOverLoad = false;
-  boolean holdingWKey = false;
+
   
   // called by dataParser#loadData
   void initCycling() {
@@ -16,6 +26,9 @@ class GUI {
 
   void drawUI() {
     hoveringOverLoad = false;
+    hoveringOverPoints = false;
+    hoveringOverMesh = false;
+    hoveringOverSurface = false;
     holdingWKey = false;
     
     hint(DISABLE_DEPTH_TEST); // draws as fixed 2D
@@ -30,20 +43,82 @@ class GUI {
     else
       fill(255);
       
-    rect(5, 5, 100, 30);
-
-    fill(0);
-    stroke(0, 255, 0);
+    float x; float y;
     textSize(20);
     textAlign(CENTER, CENTER); // centered horizontally & vertically
-    text("Load CSV", 5, 5, 100, 30);
+    
+    x = UI_WINDOW_PADDING;
+    y = height - UI_WINDOW_PADDING - UI_BUTTON_HEIGHT;
+    
+    stroke(1); // solid border
+    if (hoveringOverLoad) // set in updateMouse()
+      fill(200);
+    else
+      fill(255);
+    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    stroke(1); // solid border
+    if (hoveringOverPoints) // set in updateMouse()
+      fill(200);
+    else
+      fill(255);
+    fill(0);
+    text("Load CSV", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+
+
+
+    x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + UI_BUTTON_WIDTH;
+    if (hoveringOverPoints) // set in updateMouse()
+      fill(200);
+    else
+      fill(255);
+    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    fill(0);
+    text("Points", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+
+
+
+
+    x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION;
+    if (hoveringOverMesh) // set in updateMouse()
+      fill(200);
+    else
+      fill(255);
+    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    fill(0);
+    text("Mesh", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+
+
+
+
+   x = UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION;
+   if (hoveringOverSurface) // set in updateMouse()
+      fill(200);
+    else
+      fill(255);
+    rect(x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+    
+    fill(0);
+    text("Surface", x, y, UI_BUTTON_WIDTH, UI_BUTTON_HEIGHT);
+
 
     hint(ENABLE_DEPTH_TEST);
   }
 
   void updateMouse() {
-    if (mouseOverRect(5, 5, 100, 30))
+    if (mouseOverRect(UI_WINDOW_PADDING, height - UI_WINDOW_PADDING - 30, 100, 30))
       hoveringOverLoad = true;
+    
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + UI_BUTTON_WIDTH, height - UI_WINDOW_PADDING - 30, 100, 30))
+      hoveringOverPoints = true;
+      
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 2 * UI_BUTTON_WIDTH + UI_BUTTON_SEPARATION, height - UI_WINDOW_PADDING - 30, 100, 30))
+      hoveringOverMesh = true;
+          
+    else if (mouseOverRect(UI_WINDOW_PADDING + UI_GROUP_SEPARATION + 3 * UI_BUTTON_WIDTH + 2 * UI_BUTTON_SEPARATION, height - UI_WINDOW_PADDING - 30, 100, 30))
+      hoveringOverSurface = true;
   }
 
   boolean mouseOverRect(int rectX, int rectY, int rectWidth, int rectHeight) {
@@ -54,6 +129,15 @@ class GUI {
   void mousePressed() {
     if (hoveringOverLoad)
       loadFile();
+      
+    else if (hoveringOverPoints)
+      viewType = DATA_POINTS;
+      
+    else if (hoveringOverMesh)
+      viewType = BEST_FIT_MESH;
+            
+    else if (hoveringOverSurface)
+      viewType = BEST_FIT_SURFACE;
   }
 
   void mouseDragged() {

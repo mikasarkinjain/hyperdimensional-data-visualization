@@ -72,7 +72,6 @@ class Graph {
   }
 
   void plotPoint(double x, double y, double z) {
-    println("plot " + x + " " + y + " " + z);
     translate((float)-x, (float)-z, (float)-y);
     sphere(2);
     translate((float)x, (float)z, (float)y);
