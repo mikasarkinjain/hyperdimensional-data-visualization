@@ -11,10 +11,6 @@ class Graph {
 
   double axisLength = 425;
   double maxDimensionLength = 175;
-
-
-  float rotx = PI;
-  float roty = 0;
   
  void graph(){
     translate((float)-axisLength/4, (float)-axisLength/4, (float)-axisLength/4);
