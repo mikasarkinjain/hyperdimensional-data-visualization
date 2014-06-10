@@ -281,7 +281,7 @@ class Graph {
           plotPoint(-x, -y, z);
         }
 
-         if (arrayTable[i].length == 7 && arrayTable[i][3] == roundedW) {
+         if (arrayTable[i].length >= 7 && arrayTable[i][3] == roundedW) {
           float R = (float) ((arrayTable[i][4] - minU)*255/(maxU-minU));
           float G = (float) ((arrayTable[i][5] - minV)*255/(maxV-minV));
           float B = (float) ((arrayTable[i][6] - minT)*255/(maxT-minT));

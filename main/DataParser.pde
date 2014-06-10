@@ -150,6 +150,9 @@ class DataParser {
       load7D(); 
       break;
     }
+    
+    if (dimension > 7)
+      load7D();
   }
 
   void calcIncrements() {
