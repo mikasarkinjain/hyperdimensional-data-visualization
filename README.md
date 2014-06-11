@@ -12,4 +12,4 @@ The first three dimensions are represented spatially. The values of the fourth d
 - Pan: Arrow keys
 - Zoom: Mouse wheel
 - Rotate: Drag mouse
-- Cycle 4th Dimension: Hold W-Key + move mouse vertically
+- Cycle 4th Dimension: Hold W-Key + drag mouse
