@@ -113,7 +113,7 @@ void keyPressed() {
   gui.keyPressed();
 }
 
-void keyRealeased() {
+void keyReleased() {
   gui.keyReleased();
 }
 
