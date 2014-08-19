@@ -1,6 +1,6 @@
 Hyperdimensional Data Visualization
 ===================================
-By Mika Jain and Philipp Steinmann
+By Mika Sarkin Jain and Philipp Steinmann
 
 A Processing program for visualizing CSV data in high dimensions.
 
